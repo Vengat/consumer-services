@@ -26,10 +26,10 @@ public class JobService {
 		if (!j.getJobType().equals(job.getJobType())) j.setJobType(job.getJobType());
 		if (!j.getJobStatus().equals(job.getJobStatus())) j.setJobStatus(job.getJobStatus());
 		if (!j.getCustomerName().equals(job.getCustomerName())) j.setCustomerName(job.getCustomerName());
-		if (job.getDateDone() != null && j.getDateDone().before(job.getDateDone())) j.setDateDone(job.getDateDone());
+		if (j.getDateDone() == null || job.getDateDone() != null && j.getDateDone().before(job.getDateDone())) j.setDateDone(job.getDateDone());
 		if (job.getDescription().isEmpty() || !j.getDescription().equalsIgnoreCase(job.getDescription())) j.setDescription(job.getDescription());
 		if (!j.getPincode().equals(job.getPincode())) j.setPincode(job.getPincode());
-		if (!j.getServiceProviderName().equals(job.getServiceProviderName())) j.setServiceProviderName(job.getServiceProviderName());
+		if (j.getServiceProviderName() == null || !j.getServiceProviderName().equals(job.getServiceProviderName())) j.setServiceProviderName(job.getServiceProviderName());
 	    return repository.save(j);       	
 	}
 	
