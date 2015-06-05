@@ -6,7 +6,9 @@ import com.bang.model.Job;
 
 public interface JobRepository extends CrudRepository<Job, Long> {
 
-    //List<Job> findJobByCustomerNameAndPincode(String customerName, String pincode);
+    List<Job> findJobsByCustomerNameAndPincode(String customerName, String pincode);
+    
+    List<Job> findJobsByPincode(String pincode);
     
     //Job save(Job persisted);
     

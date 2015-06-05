@@ -12,5 +12,7 @@ import com.bang.model.ServiceProvider;
  *
  */
 public interface ServiceProviderRepository extends CrudRepository<ServiceProvider, Long> {
+	
+	public ServiceProvider findByMobileNumber(long mobileNumber);
 
 }
