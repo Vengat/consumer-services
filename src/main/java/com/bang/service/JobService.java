@@ -70,4 +70,18 @@ public class JobService {
 	public List<Job> getAllJobs() {
 		return (List<Job>) repository.findAll();
 	}
+	
+	public List<Job> getByPincode(String pincode) {
+		return (List<Job>) repository.findJobsByPincode(pincode);
+	}
+	
+	public List<Job> getByPincodeAndStatus(JobStatus jobStatus, String pincode) {
+		List<Job> jobs = repository.findJobsByJobStatusAndPincode(jobStatus, pincode);
+		return jobs;
+	}
+	
+	public List<Job> getByTypeStatusAndPincode(JobType jobType, JobStatus jobStatus, String pincode) {
+		List<Job> jobs = repository.findJobsByJobTypeAndJobStatusAndPincode(jobType, jobStatus, pincode);
+		return jobs;
+	}
 }

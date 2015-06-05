@@ -52,7 +52,7 @@ public class JobController {
 		return new ResponseEntity<Job>(j, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/jobs/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/jobs/id/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Job> get(@PathVariable("id") long id) {
 		Job j = service.getJobById(id);
 		return new ResponseEntity<Job>(j, HttpStatus.OK);
@@ -60,6 +60,25 @@ public class JobController {
 	
 	@RequestMapping(value = "/jobs/all", method = RequestMethod.GET)
 	public ResponseEntity<List<Job>> getAll() {
-		return new ResponseEntity<List<Job>>(service.getAllJobs(), HttpStatus.OK);
+		List<Job> jobs = service.getAllJobs();
+		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value ="/jobs/pincode/{pincode}", method = RequestMethod.GET)
+	public ResponseEntity<List<Job>> getByPincode(@PathVariable("pincode") String pincode) {
+		List<Job> jobs = service.getByPincode(pincode);
+		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/jobs/pincode/{pincode}/status/{status}", method = RequestMethod.GET)
+	public ResponseEntity<List<Job>> getByPincodeAndStatus(@PathVariable("status") JobStatus jobStatus, @PathVariable("pincode") String pincode) {
+		List<Job> jobs = service.getByPincodeAndStatus(jobStatus, pincode);
+		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value ="/jobs/pincode/{pincode}/status/{status}/type/{type}", method = RequestMethod.GET)
+	public ResponseEntity<List<Job>> getByPincodeAndStatusAndType(@PathVariable("type") JobType jobType, @PathVariable("status") JobStatus jobStatus, @PathVariable("pincode") String pincode) {
+		List<Job> jobs = service.getByTypeStatusAndPincode(jobType, jobStatus, pincode);
+		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
 	}
 }
