@@ -37,7 +37,7 @@ public class ServiceProviderController {
 	
 	@RequestMapping(value = "/serviceProviders", method = RequestMethod.GET)
 	public ResponseEntity<ServiceProvider> get() {
-		ServiceProvider serviceProvider = new ServiceProvider(1234567890, "Service Provider Name", EnumSet.allOf(JobType.class));
+		ServiceProvider serviceProvider = new ServiceProvider(123456789L, "Service Provider Name", EnumSet.allOf(JobType.class));
 		return new ResponseEntity<ServiceProvider>(serviceProvider, HttpStatus.OK);
 	}
 	
@@ -53,7 +53,7 @@ public class ServiceProviderController {
 		return new ResponseEntity<ServiceProvider>(sp, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/serviceProviders/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/serviceProviders/id/{id}", method = RequestMethod.GET)
 	public ResponseEntity<ServiceProvider> get(@PathVariable("id") long id) {
 		ServiceProvider sp = service.getById(id);
 		return new ResponseEntity<ServiceProvider>(sp, HttpStatus.OK);
@@ -62,6 +62,11 @@ public class ServiceProviderController {
 	@RequestMapping(value = "/serviceProviders/all", method = RequestMethod.GET)
 	public ResponseEntity<List<ServiceProvider>> getAll() {
 		return new ResponseEntity<List<ServiceProvider>>(service.getAll(), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/serviceProviders/mobileNumber/{mobileNumber}", method = RequestMethod.GET)
+	public ResponseEntity<ServiceProvider> getByMobileNumber(@PathVariable("mobileNumber") long mobileNumber) {
+		return new ResponseEntity<ServiceProvider>(service.getByMobileNumber(mobileNumber), HttpStatus.OK);
 	}
 
 }

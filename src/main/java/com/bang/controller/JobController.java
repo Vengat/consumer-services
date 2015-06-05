@@ -33,9 +33,10 @@ public class JobController {
 	@Autowired
 	JobService service;
 	
+	
 	@RequestMapping(value = "/jobs", method = RequestMethod.GET)
 	public ResponseEntity<Job> get() {
-		Job job = new Job(0L, JobType.UNDEFINED, JobStatus.OPEN, "Your name", "Pincode", "job description",  new Date());
+		Job job = new Job(0L, JobType.UNDEFINED, JobStatus.OPEN, "Your name", "Pincode", "job description", 987654321L, 123456789L, "Service Provider Name", new Date());
 		return new ResponseEntity<Job>(job, HttpStatus.OK);
 	}
 	

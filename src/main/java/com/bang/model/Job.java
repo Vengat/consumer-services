@@ -1,5 +1,6 @@
 package com.bang.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.bang.misc.*;
@@ -17,9 +18,14 @@ import java.util.Date;
 
 @Entity
 @Table(name = "jobs")
-public class Job {
+public class Job implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
+	@Column(name = "JOB_ID", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	@Enumerated(EnumType.STRING)
@@ -30,11 +36,25 @@ public class Job {
 	@Column(name = "customer_name", nullable = false, length = 50)
 	private String customerName;
 	
+	@Column(name = "customer_mobile_number", nullable = false)
+	private long customerMobileNumber;
+	
 	@Column(name = "service_provider_name", length = 50)
 	private String serviceProviderName;
 	
+	@Column(name = "sp_mobile_number", nullable = false)
+	private long serviceProviderMobileNumber;
+	
 	@Column(name = "pincode", length = 10, nullable = false)
 	private String pincode;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "customer_mobile_number", referencedColumnName = "mobile_number",  insertable = false, updatable = false)
+	private Customer customer;
+	
+	@ManyToOne
+	@JoinColumn(name = "sp_mobile_number", referencedColumnName = "mobile_number",  insertable = false, updatable = false)
+	private ServiceProvider serviceProvider;
 	
 	@Column(name = "date_initiated", nullable = false)
 	//@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentZonedDateTime")
@@ -50,13 +70,16 @@ public class Job {
 	protected Job() {
 	}
 	
-	public Job(long id, JobType jobType, JobStatus jobStatus, String customerName, String pincode, String description,  Date dateInitiated) {
+	public Job(long id, JobType jobType, JobStatus jobStatus, String customerName, String pincode, String description, long customerMobileNumber, long serviceProviderMobileNumber, String serviceProviderName, Date dateInitiated) {
 		this.id = id;
 		this.jobType = jobType;
 		this.customerName = customerName;
 		this.pincode = pincode;
 		this.jobStatus = jobStatus;
 		this.description = description;
+		this.customerMobileNumber = customerMobileNumber;
+		this.serviceProviderMobileNumber = serviceProviderMobileNumber;
+		this.serviceProviderName = serviceProviderName;
 		this.dateInitiated = dateInitiated;
 	}
 	
@@ -123,4 +146,23 @@ public class Job {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public long getServiceProviderMobileNumber() {
+		return serviceProviderMobileNumber;
+	}
+
+	public void setServiceProviderMobileNumber(long serviceProviderMobileNumber) {
+		this.serviceProviderMobileNumber = serviceProviderMobileNumber;
+	}
+
+	public long getCustomerMobileNumber() {
+		return customerMobileNumber;
+	}
+
+	public void setCustomerMobileNumber(long customerMobileNumber) {
+		this.customerMobileNumber = customerMobileNumber;
+	}
+	
+	
+	
 }
