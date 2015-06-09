@@ -5,9 +5,11 @@ import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bang.controller.exception.CustomerExistsException;
 import com.bang.controller.exception.JobNotFoundException;
 import com.bang.dao.JobRepository;
 import com.bang.misc.JobStatus;
@@ -17,6 +19,8 @@ import com.bang.model.Job;
 
 @Service
 public class JobService {
+	
+	private static final Logger logger = Logger.getLogger(JobService.class);
 	
 	@Autowired
 	JobRepository repository;
@@ -28,6 +32,7 @@ public class JobService {
 	CustomerService customerService;
 	
 	public Job create(Job job) throws IllegalArgumentException {
+		logger.info("***This log is from the job service layer***");
 		if (job.getJobType().equals(JobType.UNDEFINED)) throw new IllegalArgumentException("Job cannot be undefined");
 	    if (job.getPincode().equals("Pincode")) throw new IllegalArgumentException("Pincode needed");
 	    createCustomer(job);
@@ -35,7 +40,11 @@ public class JobService {
 	}
 	
 	public void createCustomer(Job job) {
-		customerService.create(new Customer(job.getCustomerName(), job.getPincode(), job.getCustomerMobileNumber()));
+		try {
+			customerService.create(new Customer(job.getCustomerName(), job.getPincode(), job.getCustomerMobileNumber()));
+		} catch(CustomerExistsException e) {
+			
+		}		
 	}
 	
 	public Job update(Job job) throws IllegalArgumentException {
@@ -82,6 +91,16 @@ public class JobService {
 	
 	public List<Job> getByTypeStatusAndPincode(JobType jobType, JobStatus jobStatus, String pincode) {
 		List<Job> jobs = repository.findJobsByJobTypeAndJobStatusAndPincode(jobType, jobStatus, pincode);
+		return jobs;
+	}
+	
+	public List<Job> getBySPMobileNumberAndStatus(long serviceProviderMobileNumber, JobStatus jobStatus) {
+		List<Job> jobs = repository.findJobsByServiceProviderMobileNumberAndJobStatus(serviceProviderMobileNumber, jobStatus);
+		return jobs;
+	}
+	
+	public List<Job> getByCustomerMobileNumberAndStatus(long customerMobileNumber, JobStatus jobStatus) {
+		List<Job> jobs = repository.findJobsByCustomerMobileNumberAndJobStatus(customerMobileNumber, jobStatus);
 		return jobs;
 	}
 }

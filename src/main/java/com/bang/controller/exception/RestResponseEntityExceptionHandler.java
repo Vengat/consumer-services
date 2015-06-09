@@ -35,4 +35,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     protected ResponseEntity<Object> handleServiceProviderNotFound(RuntimeException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
     	return new ResponseEntity<Object>(ex.getMessage(), headers, HttpStatus.NOT_FOUND);
     }
+    
+    @ExceptionHandler(value = {CustomerExistsException.class})
+    protected ResponseEntity<Object> handleCustomerExists(RuntimeException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    	return new ResponseEntity<Object>(ex.getMessage(), headers, HttpStatus.CONFLICT);
+    }
 }

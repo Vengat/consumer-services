@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,8 @@ import com.bang.service.JobService;
  */
 @RestController
 public class JobController {
+	
+	private static final Logger logger = Logger.getLogger(JobController.class);
 	
 	//private final AtomicLong counter = new AtomicLong();
 	@Autowired
