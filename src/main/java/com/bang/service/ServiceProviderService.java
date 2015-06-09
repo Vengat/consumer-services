@@ -5,11 +5,14 @@ package com.bang.service;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bang.controller.exception.ServiceProviderNotFoundException;
 import com.bang.dao.ServiceProviderRepository;
+import com.bang.misc.JobStatus;
+import com.bang.model.Job;
 import com.bang.model.ServiceProvider;
 
 /**
@@ -19,8 +22,13 @@ import com.bang.model.ServiceProvider;
 @Service
 public class ServiceProviderService {
 	
+	private static final Logger logger = Logger.getLogger(ServiceProviderService.class);
+	
 	@Autowired
 	ServiceProviderRepository repository;
+	
+	@Autowired
+	JobService jobService;
 	
 	public ServiceProvider create(ServiceProvider serviceProvider) {
 		return repository.save(serviceProvider);
@@ -49,6 +57,10 @@ public class ServiceProviderService {
 	
 	public List<ServiceProvider> getAll() {
 		return (List<ServiceProvider>) repository.findAll();	
+	}
+	
+	public List<Job> getJobsByMobileNumberAndStatus(long mobileNumer, JobStatus jobStatus) {
+		return (List<Job>) jobService.getBySPMobileNumberAndStatus(mobileNumer, jobStatus);
 	}
 
 }

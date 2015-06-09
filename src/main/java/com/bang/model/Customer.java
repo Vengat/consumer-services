@@ -68,6 +68,33 @@ public class Customer implements Serializable {
 		this.pincode = pincode;
 		this.mobileNumber = mobileNumber;
 	}
+	
+	@Override
+	public String toString() {
+	    return String.format("Customer name %s, address %s, city %s, pincode %s, mobileNumber %d%n", this.name, this.address, this.city, this.pincode, this.mobileNumber);	
+	}
+	
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		
+		if (!(o instanceof Customer)) return false;
+		
+		Customer cust = (Customer) o;
+		
+		if (!cust.getAddress().equals(this.address)) return false;
+		
+		if(!cust.getCity().equals(this.city)) return false;
+		
+		if (cust.getMobileNumber() != this.mobileNumber) return false;
+		
+		if (!cust.getName().equals(this.name)) return false;
+		
+		if (!cust.getPincode().equals(this.pincode)) return false;
+		
+		if(cust.getId() != this.id) return false;
+		
+		return true;
+	}
 
 	public String getName() {
 		return name;

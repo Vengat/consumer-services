@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 
+
+
+
+import com.bang.misc.JobStatus;
 import com.bang.misc.JobType;
+import com.bang.model.Job;
 import com.bang.model.ServiceProvider;
 import com.bang.service.ServiceProviderService;
 
@@ -31,6 +37,8 @@ import com.bang.service.ServiceProviderService;
  */
 @RestController
 public class ServiceProviderController {
+	
+	private static final Logger logger = Logger.getLogger(JobController.class);
 	
 	@Autowired
 	ServiceProviderService service;
@@ -67,6 +75,12 @@ public class ServiceProviderController {
 	@RequestMapping(value = "/serviceProviders/mobileNumber/{mobileNumber}", method = RequestMethod.GET)
 	public ResponseEntity<ServiceProvider> getByMobileNumber(@PathVariable("mobileNumber") long mobileNumber) {
 		return new ResponseEntity<ServiceProvider>(service.getByMobileNumber(mobileNumber), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/serviceProviders/assignedJobs/mobileNumber/{mobileNumber}/", method = RequestMethod.GET)
+	public ResponseEntity<List<Job>> getAssignedJobsByServiceProviderMobileNumber(@PathVariable("mobileNumber") long mobileNumber) {
+		List<Job> jobs = service.getJobsByMobileNumberAndStatus(mobileNumber, JobStatus.ASSIGNED);
+		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
 	}
 
 }

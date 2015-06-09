@@ -20,6 +20,9 @@ public interface JobRepository extends CrudRepository<Job, Long> {
     
     List<Job> findJobsByJobTypeAndJobStatusAndPincode(JobType jobType, JobStatus jobStatus, String pincode);
     
+    List<Job> findJobsByServiceProviderMobileNumberAndJobStatus(long serviceProviderMobileNumber, JobStatus jobStatus);
+    
+    List<Job> findJobsByCustomerMobileNumberAndJobStatus(long customerMobileNumber, JobStatus jobStatus);
     //Job save(Job persisted);
     
     //Job findOne(long id);
