@@ -82,5 +82,11 @@ public class ServiceProviderController {
 		List<Job> jobs = service.getJobsByMobileNumberAndStatus(mobileNumber, JobStatus.ASSIGNED);
 		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/serviceProviders/openJobs/pincode/{pincode}", method = RequestMethod.GET)
+	public ResponseEntity<List<Job>> getJobsByPincode(@PathVariable("pincode") String pincode) {
+		List<Job> jobs = service.getJobsByPincodeAndStatus(JobStatus.OPEN, pincode);
+		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
+	}
 
 }

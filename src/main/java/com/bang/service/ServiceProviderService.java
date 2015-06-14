@@ -62,5 +62,9 @@ public class ServiceProviderService {
 	public List<Job> getJobsByMobileNumberAndStatus(long mobileNumer, JobStatus jobStatus) {
 		return (List<Job>) jobService.getBySPMobileNumberAndStatus(mobileNumer, jobStatus);
 	}
+	
+	public List<Job> getJobsByPincodeAndStatus(JobStatus jobStatus, String pincode) {
+		return (List<Job>) jobService.getByPincodeAndStatus(jobStatus, pincode);
+	}
 
 }
