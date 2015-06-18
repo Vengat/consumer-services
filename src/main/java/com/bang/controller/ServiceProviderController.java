@@ -88,5 +88,11 @@ public class ServiceProviderController {
 		List<Job> jobs = service.getJobsByPincodeAndStatus(JobStatus.OPEN, pincode);
 		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/serviceProviders/closeJob/id/{id}", method = RequestMethod.PATCH)
+	public ResponseEntity<Job> closeJob(@PathVariable("id") long id) {
+		Job job = service.closeJob(id);
+		return new ResponseEntity<Job>(job, HttpStatus.OK);
+	}
 
 }

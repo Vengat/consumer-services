@@ -70,8 +70,8 @@ public class Job implements Serializable {
 	protected Job() {
 	}
 	
-	public Job(long id, JobType jobType, JobStatus jobStatus, String customerName, String pincode, String description, long customerMobileNumber, long serviceProviderMobileNumber, String serviceProviderName, Date dateInitiated) {
-		this.id = id;
+	public Job(JobType jobType, JobStatus jobStatus, String customerName, String pincode, String description, long customerMobileNumber, long serviceProviderMobileNumber, String serviceProviderName, Date dateInitiated) {
+		//this.id = id;
 		this.jobType = jobType;
 		this.customerName = customerName;
 		this.pincode = pincode;

@@ -8,7 +8,16 @@ package com.bang.misc;
  *
  */
 public enum JobType {
-	PLUMBING,
-	ELECTRICAL,
-	UNDEFINED
+	PLUMBING("plumbing"),
+	ELECTRICAL("electrical"),
+	UNDEFINED("undefined");
+
+	String val;
+	JobType(String val) {
+		this.val = val;
+	}
+
+	String getVal() {
+		return this.val;
+	}
 }

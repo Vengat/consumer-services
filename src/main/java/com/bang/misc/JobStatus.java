@@ -8,8 +8,18 @@ package com.bang.misc;
  *
  */
 public enum JobStatus {
-	OPEN,
-	ASSIGNED,
-    WIP,
-    CLOSED
+	OPEN("open"),
+	ASSIGNED("assigned"),
+    WIP("wip"),
+    CANCELLED("cancelled"),
+    CLOSED("closed");
+
+    String val;
+    JobStatus(String val) {
+        this.val = val;
+    }
+
+    String getVal() {
+        return val;
+    }
 }

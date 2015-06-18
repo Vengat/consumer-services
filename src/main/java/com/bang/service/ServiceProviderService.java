@@ -66,5 +66,9 @@ public class ServiceProviderService {
 	public List<Job> getJobsByPincodeAndStatus(JobStatus jobStatus, String pincode) {
 		return (List<Job>) jobService.getByPincodeAndStatus(jobStatus, pincode);
 	}
+	
+	public Job closeJob(long id) {
+		return jobService.closeJob(jobService.getJobById(id));
+	}
 
 }
