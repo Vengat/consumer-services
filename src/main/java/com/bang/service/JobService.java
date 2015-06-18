@@ -70,6 +70,13 @@ public class JobService {
 		return repository.save(j);       	
 	}
 	
+	public Job closeJob(Job job) throws IllegalArgumentException {
+		Job j = repository.findOne(job.getId());
+		j.setJobStatus(JobStatus.CLOSED);
+		j.setDateDone(new Date());
+		return j;
+	}
+	
 	public Job getJobById(long id) {
 		Job j = repository.findOne(id);	
 		if (j == null) throw new JobNotFoundException("Job not found for the id ->"+id);
