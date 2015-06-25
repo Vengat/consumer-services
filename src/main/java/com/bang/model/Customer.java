@@ -31,6 +31,7 @@ public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name = "CUST_ID", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
@@ -50,8 +51,8 @@ public class Customer implements Serializable {
 	@Column(name = "city")
 	private String city;
 	
-	@OneToMany(mappedBy = "customer", targetEntity = Job.class, fetch=FetchType.EAGER)
-	private List<Job> jobs;
+	//@OneToMany(mappedBy = "customer", targetEntity = Job.class, fetch=FetchType.LAZY)
+	//private List<Job> jobs;
 	
 	protected Customer() {}
 	
@@ -74,6 +75,7 @@ public class Customer implements Serializable {
 	    return String.format("Customer name %s, address %s, city %s, pincode %s, mobileNumber %d%n", this.name, this.address, this.city, this.pincode, this.mobileNumber);	
 	}
 	
+	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
 		
@@ -139,5 +141,15 @@ public class Customer implements Serializable {
 	public long getId() {
 		return id;
 	}
+	
+	/*
+	public void setJobs(List<Job> jobs) {
+		this.jobs = jobs;
+	}
+	
+	public List<Job> getJobs() {
+		return this.jobs;
+	}
+	*/
 
 }

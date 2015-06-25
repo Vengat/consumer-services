@@ -9,10 +9,12 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bang.controller.JobController;
 import com.bang.controller.exception.CustomerExistsException;
 import com.bang.controller.exception.CustomerNotFoundException;
+import com.bang.controller.exception.JobNotFoundException;
 import com.bang.dao.CustomerRepository;
 import com.bang.misc.JobStatus;
 import com.bang.model.Customer;
@@ -39,6 +41,7 @@ public class CustomerService {
 		return repository.save(customer);
 	}
 	
+	@Transactional
 	public Customer update(Customer customer) {
 		if (!isCustomerExists(customer.getMobileNumber())) throw new CustomerNotFoundException("Not found. Customer with mobile number "+customer.getMobileNumber());
 		Customer cust = getByMobileNumber(customer.getMobileNumber());
@@ -87,5 +90,14 @@ public class CustomerService {
 		allJobs.addAll(getWIPJobsByMobileNumber(mobileNumber));
 		allJobs.addAll(getClosedJobsByMobileNumber(mobileNumber));
 		return allJobs;
+	}
+	
+	public Job cancelJob(long jobId, long mobileNumber) throws JobNotFoundException, IllegalArgumentException, NullPointerException {
+		Job j = jobService.getJobById(jobId);
+		if (j.getCustomerMobileNumber() != mobileNumber) {
+			throw new JobNotFoundException("Either the job does not exist or the customer does not own it");
+		} else {
+			return jobService.cancel(j);
+		}		
 	}
 }

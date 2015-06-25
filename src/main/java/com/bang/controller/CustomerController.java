@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bang.controller.exception.CustomerExistsException;
 import com.bang.controller.exception.CustomerNotFoundException;
+import com.bang.controller.exception.JobNotFoundException;
 import com.bang.misc.JobStatus;
 import com.bang.misc.JobType;
 import com.bang.model.Customer;
@@ -60,6 +62,12 @@ public class CustomerController {
 	public ResponseEntity<Customer> update(@RequestBody Customer customer) throws CustomerNotFoundException, CustomerExistsException {
         Customer cust = service.update(customer);
 		return new ResponseEntity<Customer>(cust, HttpStatus.OK);
+	}
+	
+    @RequestMapping(value = "/customers/cancelJob/jobId/{jobId}/mobileNumber/{mobileNumber}", method = RequestMethod.PUT)
+	public ResponseEntity<Job> cancelJob(@PathVariable("jobId") long jobId, @PathVariable("mobileNumber") long mobileNumber) throws JobNotFoundException {
+		Job j = service.cancelJob(jobId, mobileNumber);
+		return new ResponseEntity<Job>(j, HttpStatus.OK);
 	}
 
 }

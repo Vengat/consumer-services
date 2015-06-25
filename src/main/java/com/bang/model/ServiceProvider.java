@@ -1,5 +1,6 @@
 package com.bang.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -32,6 +33,7 @@ public class ServiceProvider implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name = "SP_ID", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
@@ -47,8 +49,8 @@ public class ServiceProvider implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Set<JobType> jobTypes;
 	
-	@OneToMany(mappedBy = "serviceProvider", targetEntity = Job.class, fetch=FetchType.EAGER)
-	private List<Job> jobs;
+	//@OneToMany(mappedBy = "serviceProvider", targetEntity = Job.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	//private List<Job> jobs;
 	
 	protected ServiceProvider() {
 		
@@ -87,6 +89,16 @@ public class ServiceProvider implements Serializable {
 	public long getId() {
 		return id;
 	}
+	
+	/*
+	public void setJobs(List<Job> jobs) {
+		this.jobs = jobs;
+	}
+	
+	public List<Job> getJobs() {
+		return this.jobs;
+	}
+	*/
 		
 
 }

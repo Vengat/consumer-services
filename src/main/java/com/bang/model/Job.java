@@ -39,21 +39,21 @@ public class Job implements Serializable {
 	@Column(name = "customer_mobile_number", nullable = false)
 	private long customerMobileNumber;
 	
-	@Column(name = "service_provider_name", length = 50)
+	@Column(name = "service_provider_name", length = 50, nullable = true)
 	private String serviceProviderName;
 	
-	@Column(name = "sp_mobile_number", nullable = false)
+	@Column(name = "sp_mobile_number", nullable = true)
 	private long serviceProviderMobileNumber;
 	
 	@Column(name = "pincode", length = 10, nullable = false)
 	private String pincode;
 	
 	@ManyToOne(optional = true)
-	@JoinColumn(name = "customer_mobile_number", referencedColumnName = "mobile_number",  insertable = false, updatable = false)
+	@JoinColumn(name = "CUST_ID", referencedColumnName = "CUST_ID",  insertable = false, updatable = false)
 	private Customer customer;
 	
-	@ManyToOne
-	@JoinColumn(name = "sp_mobile_number", referencedColumnName = "mobile_number",  insertable = false, updatable = false)
+	@ManyToOne(optional = true, fetch = FetchType.LAZY)
+	@JoinColumn(name = "SP_ID", referencedColumnName = "SP_ID",  insertable = false, updatable = false)
 	private ServiceProvider serviceProvider;
 	
 	@Column(name = "date_initiated", nullable = false)
@@ -81,6 +81,22 @@ public class Job implements Serializable {
 		this.serviceProviderMobileNumber = serviceProviderMobileNumber;
 		this.serviceProviderName = serviceProviderName;
 		this.dateInitiated = dateInitiated;
+	}
+	
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!(o instanceof Job)) return false;
+		Job job = (Job) o;
+		if (job.getId() != this.id) return false;
+		if (!job.getJobType().equals(this.jobType)) return false;
+		//if (!job.getJobStatus().equals(this.jobStatus)) return false;
+		if (!job.getPincode().equals(this.pincode)) return false;
+		if (job.getCustomerMobileNumber() != this.customerMobileNumber) return false;
+		if (!job.getCustomerName().equals(this.customerName)) return false;
+		if (!job.getDateInitiated().equals(this.dateInitiated)) return false;
+		return true;
 	}
 	
 	public JobType getJobType() {

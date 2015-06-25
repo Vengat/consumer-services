@@ -25,10 +25,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 
+
+
+import com.bang.controller.exception.JobNotFoundException;
 import com.bang.misc.JobStatus;
 import com.bang.misc.JobType;
 import com.bang.model.Job;
 import com.bang.model.ServiceProvider;
+import com.bang.service.JobService;
 import com.bang.service.ServiceProviderService;
 
 /**
@@ -42,6 +46,9 @@ public class ServiceProviderController {
 	
 	@Autowired
 	ServiceProviderService service;
+	
+	@Autowired
+	JobService jobService;
 	
 	@RequestMapping(value = "/serviceProviders", method = RequestMethod.GET)
 	public ResponseEntity<ServiceProvider> get() {
@@ -89,10 +96,19 @@ public class ServiceProviderController {
 		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/serviceProviders/closeJob/id/{id}", method = RequestMethod.PATCH)
-	public ResponseEntity<Job> closeJob(@PathVariable("id") long id) {
-		Job job = service.closeJob(id);
+	@RequestMapping(value = "/serviceProviders/closeJob/jobId/{jobId}", method = RequestMethod.PUT)
+	public ResponseEntity<Job> closeJob(@PathVariable("jobId") long jobId) {
+		Job job = service.closeJob(jobId);
 		return new ResponseEntity<Job>(job, HttpStatus.OK);
 	}
+	
+	
+	
+	@RequestMapping(value = "/serviceProviders/assignJob/jobId/{jobId}", method = RequestMethod.PUT)
+	public ResponseEntity<Job> assignJob(@PathVariable("jobId") long jobId, @RequestBody ServiceProvider serviceProvider) {
+		Job job = service.assignJob(jobId, serviceProvider);
+		return new ResponseEntity<Job>(job, HttpStatus.OK);
+	}
+	
 
 }
