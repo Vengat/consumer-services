@@ -39,7 +39,7 @@ public class JobController {
 	
 	@RequestMapping(value = "/jobs", method = RequestMethod.GET)
 	public ResponseEntity<Job> get() {
-		Job job = new Job(JobType.UNDEFINED, JobStatus.OPEN, "Your name", "Pincode", "job description", 987654321L, 123456789L, "Service Provider Name", new Date());
+		Job job = new Job(JobType.UNDEFINED, JobStatus.OPEN, "", "", "", 0L, 0L, "", new Date());
 		return new ResponseEntity<Job>(job, HttpStatus.OK);
 	}
 	
@@ -83,5 +83,11 @@ public class JobController {
 	public ResponseEntity<List<Job>> getByPincodeAndStatusAndType(@PathVariable("type") JobType jobType, @PathVariable("status") JobStatus jobStatus, @PathVariable("pincode") String pincode) {
 		List<Job> jobs = service.getByTypeStatusAndPincode(jobType, jobStatus, pincode);
 		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/jobs/assignJob", method = RequestMethod.PUT)
+	public ResponseEntity<Job> updateServiceProvider(@RequestBody Job job) {
+		Job j = service.assign(job);
+		return new ResponseEntity<Job>(j, HttpStatus.OK);
 	}
 }

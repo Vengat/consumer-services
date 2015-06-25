@@ -8,6 +8,7 @@ import javax.persistence.EntityNotFoundException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bang.controller.exception.CustomerExistsException;
 import com.bang.controller.exception.JobNotFoundException;
@@ -47,6 +48,7 @@ public class JobService {
 		}		
 	}
 	
+	@Transactional
 	public Job update(Job job) throws IllegalArgumentException {
 		Job j = repository.findOne(job.getId());
 		if (j == null) throw new NullPointerException("Job not found");
@@ -70,11 +72,45 @@ public class JobService {
 		return repository.save(j);       	
 	}
 	
-	public Job closeJob(Job job) throws IllegalArgumentException {
+	@Transactional
+	public Job cancel(Job job) throws IllegalArgumentException, NullPointerException {
 		Job j = repository.findOne(job.getId());
+		if (j == null) throw new NullPointerException("Job not found");
+		j.setJobStatus(JobStatus.CANCELLED);
+		return repository.save(j);
+	}
+	
+	@Transactional
+	public Job closeJob(Job job) throws IllegalArgumentException, NullPointerException {
+		Job j = repository.findOne(job.getId());
+		if (j == null) throw new NullPointerException("Job not found");
 		j.setJobStatus(JobStatus.CLOSED);
 		j.setDateDone(new Date());
 		return j;
+	}
+	
+	@Transactional
+	public Job assign(Job job) throws IllegalArgumentException, NullPointerException {		
+		Job j = repository.findOne(job.getId());
+		logger.info("About to assign the job "+job.getId());
+		if (j == null) throw new NullPointerException("Job not found");
+		logger.info("About to assign the job. Job is available in the db "+j.getId());
+		if (j.getServiceProviderMobileNumber() !=  0) {
+			logger.info("Sorry cant assign job with id"+j.getId()+" SP Phone"+j.getServiceProviderMobileNumber());
+			throw new IllegalArgumentException("Job is already taken");
+		} else {
+			logger.info("Trying to assign the job with id"+j.getId());
+			j.setJobStatus(JobStatus.ASSIGNED);
+			j.setServiceProviderMobileNumber(job.getServiceProviderMobileNumber());
+			j.setServiceProviderName(job.getServiceProviderName());
+			return repository.save(j);
+		}
+	}
+	
+	public Job assignBySP(Job job)  throws IllegalArgumentException, NullPointerException {
+		Job j = job;
+		if (j == null) throw new NullPointerException("Job not found");
+		return repository.save(j);
 	}
 	
 	public Job getJobById(long id) {
