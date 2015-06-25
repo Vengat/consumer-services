@@ -3,6 +3,7 @@
  */
 package com.bang.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -92,11 +93,32 @@ public class ServiceProviderService {
 		logger.info(job.getJobType());
 		logger.info("sp.getJobTypes().contains(job.getJobType()) "+sp.getJobTypes().contains(job.getJobType()));
 		if (!sp.getJobTypes().contains(job.getJobType())) throw new IllegalArgumentException("Service provider is not registerd to take up this job type");
+		if (!sp.getPincodesServiced().contains(job.getPincode())) throw new IllegalArgumentException("Service provider cannot service this job area");
 		//Job j = new Job(job.getJobType(), job.getJobStatus(), job.getCustomerName(), job.getPincode(), job.getPincode(), long customerMobileNumber, long serviceProviderMobileNumber, String serviceProviderName, Date dateInitiated)
 		job.setJobStatus(JobStatus.ASSIGNED);
 		job.setServiceProviderName(sp.getName());
 		job.setServiceProviderMobileNumber(sp.getMobileNumber());
 		return jobService.assignBySP(job);
+	}
+	
+	public List<Job> getJobsMatchingProfile(long mobileNumber) {
+		ServiceProvider sp = getByMobileNumber(mobileNumber);
+		if (sp == null) throw new NullPointerException("Service provider with the mobile number not found");
+		logger.info("Service provider available with mobile number "+mobileNumber);
+		List<Job> matchingJobs = new ArrayList<Job>();
+		List<Job> openJobs = null;
+		List<Job> myAssignedJobs = null;
+		for (JobType jobType: sp.getJobTypes()) {
+			for (String pincode: sp.getPincodesServiced()) {
+				openJobs = jobService.getByTypeStatusAndPincode(jobType, JobStatus.OPEN, pincode);
+				matchingJobs.addAll(openJobs);
+				openJobs = null;
+			}
+		}
+
+		myAssignedJobs = getJobsByMobileNumberAndStatus(sp.getMobileNumber(), JobStatus.ASSIGNED);
+		matchingJobs.addAll(myAssignedJobs);
+		return matchingJobs;
 	}
 
 }

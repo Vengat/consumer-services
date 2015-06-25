@@ -49,6 +49,10 @@ public class ServiceProvider implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Set<JobType> jobTypes;
 	
+	@ElementCollection(targetClass = String.class)
+	@CollectionTable(name = "pincodesServicedSP", joinColumns = @JoinColumn(name = "id"))
+	private Set<String> pincodesServiced;
+	
 	//@OneToMany(mappedBy = "serviceProvider", targetEntity = Job.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	//private List<Job> jobs;
 	
@@ -56,10 +60,11 @@ public class ServiceProvider implements Serializable {
 		
 	}
 	
-	public ServiceProvider(long mobileNumber, String name, Set<JobType> jobTypes) {
+	public ServiceProvider(long mobileNumber, String name, Set<JobType> jobTypes, Set<String> pincodesServiced) {
 		this.mobileNumber = mobileNumber;
 		this.name = name;
 		this.jobTypes = jobTypes;
+		this.pincodesServiced = pincodesServiced;
 	}
 
 	public long getMobileNumber() {
@@ -99,6 +104,14 @@ public class ServiceProvider implements Serializable {
 		return this.jobs;
 	}
 	*/
+	
+	public void setPincodesServiced(Set<String> pincodes) {
+		this.pincodesServiced = pincodes;
+	}
+	
+	public Set<String> getPincodesServiced() {
+		return this.pincodesServiced;
+	}
 		
 
 }
