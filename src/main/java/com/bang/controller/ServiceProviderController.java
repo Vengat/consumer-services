@@ -5,7 +5,9 @@ package com.bang.controller;
 
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+
 
 
 
@@ -52,7 +56,7 @@ public class ServiceProviderController {
 	
 	@RequestMapping(value = "/serviceProviders", method = RequestMethod.GET)
 	public ResponseEntity<ServiceProvider> get() {
-		ServiceProvider serviceProvider = new ServiceProvider(123456789L, "Service Provider Name", EnumSet.allOf(JobType.class));
+		ServiceProvider serviceProvider = new ServiceProvider(0L, "Service Provider Name", EnumSet.allOf(JobType.class), new HashSet<String>());
 		return new ResponseEntity<ServiceProvider>(serviceProvider, HttpStatus.OK);
 	}
 	
@@ -108,6 +112,12 @@ public class ServiceProviderController {
 	public ResponseEntity<Job> assignJob(@PathVariable("jobId") long jobId, @RequestBody ServiceProvider serviceProvider) {
 		Job job = service.assignJob(jobId, serviceProvider);
 		return new ResponseEntity<Job>(job, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/serviceProviders/openAssignJobs/mobileNumber/{mobileNumber}", method = RequestMethod.GET)
+	public ResponseEntity<List<Job>> getOpenAssignedJobsByPincode(@PathVariable long mobileNumber) throws NullPointerException {
+		List<Job> jobs= service.getJobsMatchingProfile(mobileNumber);
+		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
 	}
 	
 
