@@ -20,7 +20,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
  
     @ExceptionHandler(value = { IllegalArgumentException.class, IllegalStateException.class })
     protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
-        String bodyOfResponse = "This should be application specific";
+        String bodyOfResponse = "Either you sent illegal arguments or the state of the instance was not legal";
         return handleExceptionInternal(ex, bodyOfResponse, 
           new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
@@ -33,7 +33,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     
     @ExceptionHandler(value = {ServiceProviderNotFoundException.class})
     protected ResponseEntity<Object> handleServiceProviderNotFound(RuntimeException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-    	return new ResponseEntity<Object>(ex.getMessage(), headers, HttpStatus.NOT_FOUND);
+    	//return new ResponseEntity<Object>(ex.getMessage(), headers, HttpStatus.NOT_FOUND);
+    	String bodyOfResponse = "You are not registered as a service provider";
+    	return handleExceptionInternal(ex, bodyOfResponse, 
+    	          new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    	
     }
     
     @ExceptionHandler(value = {CustomerExistsException.class})
