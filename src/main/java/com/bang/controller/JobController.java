@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bang.misc.DaySegment;
 import com.bang.misc.JobStatus;
 import com.bang.misc.JobType;
 import com.bang.model.Job;
@@ -39,7 +40,8 @@ public class JobController {
 	
 	@RequestMapping(value = "/jobs", method = RequestMethod.GET)
 	public ResponseEntity<Job> get() {
-		Job job = new Job(JobType.UNDEFINED, JobStatus.OPEN, "", "", "", 0L, 0L, "", new Date());
+		logger.info("About to get job");
+		Job job = new Job(JobType.UNDEFINED, JobStatus.OPEN, "", "", "", 0L, 0L, "", new Date(), DaySegment.EVENING);
 		return new ResponseEntity<Job>(job, HttpStatus.OK);
 	}
 	

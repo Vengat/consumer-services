@@ -17,6 +17,7 @@ import com.bang.misc.JobStatus;
 import com.bang.misc.JobType;
 import com.bang.model.Customer;
 import com.bang.model.Job;
+import com.bang.util.DateManipulation;
 
 @Service
 public class JobService {
@@ -35,7 +36,8 @@ public class JobService {
 	public Job create(Job job) throws IllegalArgumentException {
 		logger.info("***This log is from the job service layer***");
 		if (job.getJobType().equals(JobType.UNDEFINED)) throw new IllegalArgumentException("Job cannot be undefined");
-	    if (job.getPincode().equals("Pincode")) throw new IllegalArgumentException("Pincode needed");
+	    if (job.getPincode().equals("") || job.getPincode().isEmpty()) throw new IllegalArgumentException("Pincode needed");
+	    if (!DateManipulation.validAssignDateDaySegment(job.getDatePreferred(), job.getDaySegment())) throw new IllegalArgumentException("Customer preferred date and time cant be met");
 	    createCustomer(job);
 	    return repository.save(job);
 	}
@@ -68,8 +70,21 @@ public class JobService {
 			j.setServiceProviderMobileNumber(job.getServiceProviderMobileNumber());
 			j.setServiceProviderName(spService.getByMobileNumber(job.getServiceProviderMobileNumber()).getName());
 		}
+		if (!DateManipulation.validAssignDateDaySegment(job.getDatePreferred(), job.getDaySegment())) throw new IllegalArgumentException("Customer preferred date and time cant be met");
+		if (j.getDatePreferred() == null || j.getDatePreferred() != job.getDatePreferred() && job.getDatePreferred().after(DateManipulation.getYesterdayDate())) j.setDatePreferred(job.getDatePreferred());
+		if(j.getDaySegment() == null ||!j.getDaySegment().equals(job.getDaySegment())) j.setDaySegment(job.getDaySegment());
 		//if (j.getServiceProviderName() == null || !j.getServiceProviderName().equals(job.getServiceProviderName())) j.setServiceProviderName(job.getServiceProviderName());	    
 		return repository.save(j);       	
+	}
+	
+	@Transactional
+	public Job updateCustomerPreferredDateTime(Job job) throws IllegalArgumentException, NullPointerException {
+		Job j = repository.findOne(job.getId());
+		if (j == null) throw new NullPointerException("Job not found");
+		if (!DateManipulation.validAssignDateDaySegment(job.getDatePreferred(), job.getDaySegment())) throw new IllegalArgumentException("Customer preferred date and time cant be met");
+		if (j.getDatePreferred() == null || j.getDatePreferred() != job.getDatePreferred() && job.getDatePreferred().after(DateManipulation.getYesterdayDate())) j.setDatePreferred(job.getDatePreferred());
+		if(j.getDaySegment() == null ||!j.getDaySegment().equals(job.getDaySegment())) j.setDaySegment(job.getDaySegment());
+		return repository.save(j);
 	}
 	
 	@Transactional
@@ -105,6 +120,33 @@ public class JobService {
 			j.setServiceProviderName(job.getServiceProviderName());
 			return repository.save(j);
 		}
+	}
+	
+	@Transactional
+	public Job agree(Job job) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+		Job j = repository.findOne(job.getId());
+		logger.info("About to agree the job "+job.getId());
+		if (j == null) throw new NullPointerException("Job not found");
+		logger.info("About to agree the job. Job is available in the db "+j.getId());
+		if (!j.getJobStatus().equals(JobStatus.ASSIGNED)) throw new IllegalStateException("Job is not in the right state to be agreed");
+		if (j.getJobStatus().equals(JobStatus.ASSIGNED)) j.setJobStatus(JobStatus.AGREED);
+		return repository.save(j);
+	}
+	
+	@Transactional
+	public Job unassign(Job job) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+		Job j = repository.findOne(job.getId());
+		logger.info("About to unassign or disagree the service provider choice "+job.getId());
+		if (j == null) throw new NullPointerException("Job not found");
+		logger.info("About to disagree/unassign job "+job.getId());
+		logger.info(j.getJobStatus().equals(JobStatus.ASSIGNED));
+		if (!j.getJobStatus().equals(JobStatus.ASSIGNED) && !j.getJobStatus().equals(JobStatus.AGREED)) throw new IllegalStateException("Job is not in the right state to be unassigned");
+		if (j.getJobStatus().equals(JobStatus.ASSIGNED) || j.getJobStatus().equals(JobStatus.AGREED)) {
+			j.setJobStatus(JobStatus.OPEN);
+			j.setServiceProviderMobileNumber(0);
+			j.setServiceProviderName("");
+		}
+		return repository.save(j);
 	}
 	
 	public Job assignBySP(Job job)  throws IllegalArgumentException, NullPointerException {

@@ -52,6 +52,12 @@ public class CustomerController {
 		return new ResponseEntity<Customer>(cust, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/customers/mobileNumber/{mobileNumber}", method = RequestMethod.GET)
+	public ResponseEntity<Customer> getByMobileNumber(@PathVariable long mobileNumber) throws NullPointerException {
+		Customer customer = service.getByMobileNumber(mobileNumber);
+		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/customers/jobs/mobileNumber/{mobileNumber}", method = RequestMethod.GET)
 	public ResponseEntity<List<Job>> getAllJobs(@PathVariable long mobileNumber) {
 		List<Job> jobs = service.getAllJobsByMobileNumber(mobileNumber);
@@ -69,5 +75,19 @@ public class CustomerController {
 		Job j = service.cancelJob(jobId, mobileNumber);
 		return new ResponseEntity<Job>(j, HttpStatus.OK);
 	}
+    
+    @RequestMapping(value = "/customers/agreeJob", method = RequestMethod.PUT)
+    public ResponseEntity<Job> agreeServiceProviderForJob(@RequestBody Job job) throws NullPointerException, IllegalStateException {
+    	Job j = service.agreeServiceProviderForJob(job);
+    	return new ResponseEntity<Job>(j, HttpStatus.OK);    	
+    }
+    
+    @RequestMapping(value = "/customers/unassignJob", method = RequestMethod.PUT)
+    public ResponseEntity<Job> unassignServiceProviderForJob(@RequestBody Job job) throws NullPointerException, IllegalStateException {
+    	Job j = service.unassignServiceProviderForJob(job);
+    	return new ResponseEntity<Job>(j, HttpStatus.OK);    	
+    }
+    
+    
 
 }
