@@ -100,4 +100,20 @@ public class CustomerService {
 			return jobService.cancel(j);
 		}		
 	}
+	
+	public Job agreeServiceProviderForJob(Job job) throws JobNotFoundException, IllegalArgumentException, NullPointerException, IllegalStateException {
+		Job j = jobService.getJobById(job.getId());
+		if (j.getCustomerMobileNumber() != job.getCustomerMobileNumber()) {
+			throw new JobNotFoundException("Either the job does not exist or the customer does not own it");
+		}
+		return jobService.agree(j);
+	}
+	
+	public Job unassignServiceProviderForJob(Job job) throws JobNotFoundException, IllegalArgumentException, NullPointerException, IllegalStateException {
+		Job j = jobService.getJobById(job.getId());
+		if (j.getCustomerMobileNumber() != job.getCustomerMobileNumber()) {
+			throw new JobNotFoundException("Either the job does not exist or the customer does not own it");
+		}
+		return jobService.unassign(j);
+	}
 }

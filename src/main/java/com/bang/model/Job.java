@@ -32,7 +32,9 @@ public class Job implements Serializable {
 	private JobType jobType; //plumbing, painting etc
 	@Enumerated(EnumType.STRING)
 	private JobStatus jobStatus;
-	
+	@Enumerated(EnumType.STRING)
+	private DaySegment daySegment;
+
 	@Column(name = "customer_name", nullable = false, length = 50)
 	private String customerName;
 	
@@ -60,6 +62,11 @@ public class Job implements Serializable {
 	//@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentZonedDateTime")
 	@Type(type = "date")
 	private Date dateInitiated;
+	
+	@Column(name = "date_preferred", nullable = true)
+	@Type(type = "date")
+	private Date datePreferred;
+	
 	@Column(name = "date_done", nullable = true)
 	@Type(type = "date")
 	private Date dateDone;
@@ -70,7 +77,7 @@ public class Job implements Serializable {
 	protected Job() {
 	}
 	
-	public Job(JobType jobType, JobStatus jobStatus, String customerName, String pincode, String description, long customerMobileNumber, long serviceProviderMobileNumber, String serviceProviderName, Date dateInitiated) {
+	public Job(JobType jobType, JobStatus jobStatus, String customerName, String pincode, String description, long customerMobileNumber, long serviceProviderMobileNumber, String serviceProviderName, Date datePreferred, DaySegment daySegment) {
 		//this.id = id;
 		this.jobType = jobType;
 		this.customerName = customerName;
@@ -80,7 +87,9 @@ public class Job implements Serializable {
 		this.customerMobileNumber = customerMobileNumber;
 		this.serviceProviderMobileNumber = serviceProviderMobileNumber;
 		this.serviceProviderName = serviceProviderName;
-		this.dateInitiated = dateInitiated;
+		this.dateInitiated = new Date();
+		this.datePreferred = datePreferred;
+		this.daySegment = daySegment;
 	}
 	
 
@@ -113,6 +122,14 @@ public class Job implements Serializable {
 
 	public void setJobStatus(JobStatus jobStatus) {
 		this.jobStatus = jobStatus;
+	}
+	
+	public DaySegment getDaySegment() {
+		return daySegment;
+	}
+
+	public void setDaySegment(DaySegment daySegment) {
+		this.daySegment = daySegment;
 	}
 
 	public String getCustomerName() {
@@ -179,6 +196,11 @@ public class Job implements Serializable {
 		this.customerMobileNumber = customerMobileNumber;
 	}
 	
-	
-	
+	public Date getDatePreferred() {
+		return datePreferred;
+	}
+
+	public void setDatePreferred(Date datePreferred) {
+		this.datePreferred = datePreferred;
+	}
 }
