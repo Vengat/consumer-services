@@ -55,6 +55,12 @@ public class ServiceProviderService {
 		return sp;
 	}
 	
+	public boolean isServiceProvider(long mobileNumber) {
+		ServiceProvider sp =  repository.findByMobileNumber(mobileNumber);
+		if (sp == null) return false;
+		return true;
+	}
+	
 	@Transactional
 	public ServiceProvider update(ServiceProvider serviceProvider) {
 		ServiceProvider sp = getById(serviceProvider.getId());
@@ -118,6 +124,29 @@ public class ServiceProviderService {
 
 		myAssignedJobs = getJobsByMobileNumberAndStatus(sp.getMobileNumber(), JobStatus.ASSIGNED);
 		matchingJobs.addAll(myAssignedJobs);
+		return matchingJobs;
+	}
+	
+	public List<Job> getOpenAssignedAgreedJobsMatchingProfile(long mobileNumber) {
+		ServiceProvider sp = getByMobileNumber(mobileNumber);
+		if (sp == null) throw new NullPointerException("Service provider with the mobile number not found");
+		logger.info("Service provider available with mobile number "+mobileNumber);
+		List<Job> matchingJobs = new ArrayList<Job>();
+		List<Job> openJobs = null;
+		List<Job> myAssignedJobs = null;
+		List<Job> myAgreedJobs = null;
+		for (JobType jobType: sp.getJobTypes()) {
+			for (String pincode: sp.getPincodesServiced()) {
+				openJobs = jobService.getByTypeStatusAndPincode(jobType, JobStatus.OPEN, pincode);
+				matchingJobs.addAll(openJobs);
+				openJobs = null;
+			}
+		}
+
+		myAssignedJobs = getJobsByMobileNumberAndStatus(sp.getMobileNumber(), JobStatus.ASSIGNED);
+		matchingJobs.addAll(myAssignedJobs);
+		myAgreedJobs = getJobsByMobileNumberAndStatus(sp.getMobileNumber(), JobStatus.ASSIGNED);
+		matchingJobs.addAll(myAgreedJobs);
 		return matchingJobs;
 	}
 
