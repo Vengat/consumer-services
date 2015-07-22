@@ -55,12 +55,14 @@ public class ServiceProviderService {
 		return sp;
 	}
 	
+
 	public boolean isServiceProvider(long mobileNumber) {
 		ServiceProvider sp =  repository.findByMobileNumber(mobileNumber);
 		if (sp == null) return false;
 		return true;
 	}
 	
+
 	@Transactional
 	public ServiceProvider update(ServiceProvider serviceProvider) {
 		ServiceProvider sp = getById(serviceProvider.getId());
@@ -126,7 +128,7 @@ public class ServiceProviderService {
 		matchingJobs.addAll(myAssignedJobs);
 		return matchingJobs;
 	}
-	
+
 	public List<Job> getOpenAssignedAgreedJobsMatchingProfile(long mobileNumber) {
 		ServiceProvider sp = getByMobileNumber(mobileNumber);
 		if (sp == null) throw new NullPointerException("Service provider with the mobile number not found");
@@ -149,5 +151,6 @@ public class ServiceProviderService {
 		matchingJobs.addAll(myAgreedJobs);
 		return matchingJobs;
 	}
+
 
 }

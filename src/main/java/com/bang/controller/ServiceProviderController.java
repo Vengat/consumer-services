@@ -88,11 +88,13 @@ public class ServiceProviderController {
 		return new ResponseEntity<ServiceProvider>(service.getByMobileNumber(mobileNumber), HttpStatus.OK);
 	}
 	
+
 	@RequestMapping(value = "/serviceProviders/isServiceProvider/mobileNumber/{mobileNumber}", method = RequestMethod.GET)
 	public ResponseEntity<Boolean> isServiceProvider(@PathVariable("mobileNumber") long mobileNumber) {
 		return new ResponseEntity<Boolean>(service.isServiceProvider(mobileNumber), HttpStatus.OK);
 	}
 	
+
 	@RequestMapping(value = "/serviceProviders/assignedJobs/mobileNumber/{mobileNumber}/", method = RequestMethod.GET)
 	public ResponseEntity<List<Job>> getAssignedJobsByServiceProviderMobileNumber(@PathVariable("mobileNumber") long mobileNumber) {
 		List<Job> jobs = service.getJobsByMobileNumberAndStatus(mobileNumber, JobStatus.ASSIGNED);
@@ -125,11 +127,13 @@ public class ServiceProviderController {
 		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
 	}
 	
+
 	@RequestMapping(value = "/serviceProviders/openAssignAgreedJobs/mobileNumber/{mobileNumber}", method = RequestMethod.GET)
 	public ResponseEntity<List<Job>> getOpenAssignedAgreedJobsByPincode(@PathVariable long mobileNumber) throws NullPointerException {
 		List<Job> jobs= service.getOpenAssignedAgreedJobsMatchingProfile(mobileNumber);
 		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
 	}
 	
+
 
 }
