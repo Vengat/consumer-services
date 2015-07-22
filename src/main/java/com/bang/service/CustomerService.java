@@ -75,6 +75,10 @@ public class CustomerService {
 		return this.getJobsByMobileNumberAndStatus(mobileNumber, JobStatus.ASSIGNED);
 	}
 	
+	public List<Job> getAgreedJobsByMobileNumber(long mobileNumber) {
+		return this.getJobsByMobileNumberAndStatus(mobileNumber, JobStatus.AGREED);
+	}
+	
 	public List<Job> getWIPJobsByMobileNumber(long mobileNumber) {
 		return this.getJobsByMobileNumberAndStatus(mobileNumber, JobStatus.WIP);
 	}
@@ -89,6 +93,7 @@ public class CustomerService {
 		allJobs.addAll(getAssignedJobsByMobileNumber(mobileNumber));
 		allJobs.addAll(getWIPJobsByMobileNumber(mobileNumber));
 		allJobs.addAll(getClosedJobsByMobileNumber(mobileNumber));
+		allJobs.addAll(getAgreedJobsByMobileNumber(mobileNumber));
 		return allJobs;
 	}
 	
