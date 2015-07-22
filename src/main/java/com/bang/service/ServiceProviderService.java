@@ -147,7 +147,7 @@ public class ServiceProviderService {
 
 		myAssignedJobs = getJobsByMobileNumberAndStatus(sp.getMobileNumber(), JobStatus.ASSIGNED);
 		matchingJobs.addAll(myAssignedJobs);
-		myAgreedJobs = getJobsByMobileNumberAndStatus(sp.getMobileNumber(), JobStatus.ASSIGNED);
+		myAgreedJobs = getJobsByMobileNumberAndStatus(sp.getMobileNumber(), JobStatus.AGREED);
 		matchingJobs.addAll(myAgreedJobs);
 		return matchingJobs;
 	}

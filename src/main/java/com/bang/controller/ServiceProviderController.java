@@ -18,19 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-
-
-
-
-
-
-
-
-
-
-
-
 import com.bang.controller.exception.JobNotFoundException;
 import com.bang.misc.JobStatus;
 import com.bang.misc.JobType;
@@ -127,7 +114,12 @@ public class ServiceProviderController {
 		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
 	}
 	
-
+/**
+ * 
+ * @param mobileNumber
+ * @return
+ * @throws NullPointerException
+ */
 	@RequestMapping(value = "/serviceProviders/openAssignAgreedJobs/mobileNumber/{mobileNumber}", method = RequestMethod.GET)
 	public ResponseEntity<List<Job>> getOpenAssignedAgreedJobsByPincode(@PathVariable long mobileNumber) throws NullPointerException {
 		List<Job> jobs= service.getOpenAssignedAgreedJobsMatchingProfile(mobileNumber);
