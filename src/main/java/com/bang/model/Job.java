@@ -13,7 +13,7 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.Type;
 
-import java.util.Date;
+
 
 
 @Entity
@@ -64,11 +64,13 @@ public class Job implements Serializable {
 	private Date dateInitiated;
 	
 	@Column(name = "date_preferred", nullable = true)
+	//@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentZonedDateTime")
 	@Type(type = "date")
 	private Date datePreferred;
 	
 	@Column(name = "date_done", nullable = true)
 	@Type(type = "date")
+	//@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentZonedDateTime")
 	private Date dateDone;
 	
 	@Column(name = "description", length = 500)
@@ -171,6 +173,10 @@ public class Job implements Serializable {
 	public Date getDateInitiated() {
 		return dateInitiated;
 	}
+	
+	 public void setDateInitiated(Date dateInitiated) {
+         this.dateInitiated = dateInitiated;
+    }
 
 	public String getDescription() {
 		return description;

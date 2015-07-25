@@ -35,6 +35,7 @@ public class JobService {
 	
 	public Job create(Job job) throws IllegalArgumentException {
 		logger.info("***This log is from the job service layer***");
+		logger.info("Customer preferred date is "+job.getDatePreferred().toString());
 		if (job.getJobType().equals(JobType.UNDEFINED)) throw new IllegalArgumentException("Job cannot be undefined");
 	    if (job.getPincode().equals("") || job.getPincode().isEmpty()) throw new IllegalArgumentException("Pincode needed");
 	    if (!DateManipulation.validAssignDateDaySegment(job.getDatePreferred(), job.getDaySegment())) throw new IllegalArgumentException("Customer preferred date and time cant be met");

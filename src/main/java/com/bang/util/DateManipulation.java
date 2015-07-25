@@ -42,7 +42,7 @@ public class DateManipulation {
 	public static boolean isSegmentAssignableToday(Date date, DaySegment daySegment) {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, 0);
-		DateFormat df = new SimpleDateFormat("h");
+		DateFormat df = new SimpleDateFormat("HH");
 		String time = df.format(date);
 		logger.info(" df.format(date) "+df.format(date));
 		logger.info("daySegment "+DaySegment.valueOf(daySegment.toString()));
@@ -50,8 +50,13 @@ public class DateManipulation {
 		logger.info("date.equals(new Date(cal.getTimeInMillis())) "+date.equals(new Date(cal.getTimeInMillis())));
 		//Check if the date is today's
 		if (isTodayDate(date)) {
+			
+			if (Long.parseLong(time) >=0 && Long.parseLong(time) < 9) {
+                if (!dSegment.isEmpty()) {
+                    return true;
+                }        
 			//If the CURRENT time is 9-11 then except 9-11 segment all other greater segments are applicable
-			 if (Long.parseLong(time) >= 9 && Long.parseLong(time) < 11) {
+			 } else if (Long.parseLong(time) >= 9 && Long.parseLong(time) < 11) {
 				 if (!dSegment.equals("9-11") || !dSegment.isEmpty()) {
 					 return true;
 				 }
