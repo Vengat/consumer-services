@@ -38,7 +38,7 @@ public class JobService {
 		logger.info("Customer preferred date is "+job.getDatePreferred().toString());
 		if (job.getJobType().equals(JobType.UNDEFINED)) throw new IllegalArgumentException("Job cannot be undefined");
 	    if (job.getPincode().equals("") || job.getPincode().isEmpty()) throw new IllegalArgumentException("Pincode needed");
-	    if (!DateManipulation.validAssignDateDaySegment(job.getDatePreferred(), job.getDaySegment())) throw new IllegalArgumentException("Customer preferred date and time cant be met");
+	    if (!DateManipulation.validAssignDateDaySegment(job.getDatePreferred(), job.getDaySegment(), job.getTimeZone())) throw new IllegalArgumentException("Customer preferred date and time cant be met");
 	    createCustomer(job);
 	    return repository.save(job);
 	}
@@ -71,7 +71,7 @@ public class JobService {
 			j.setServiceProviderMobileNumber(job.getServiceProviderMobileNumber());
 			j.setServiceProviderName(spService.getByMobileNumber(job.getServiceProviderMobileNumber()).getName());
 		}
-		if (!DateManipulation.validAssignDateDaySegment(job.getDatePreferred(), job.getDaySegment())) throw new IllegalArgumentException("Customer preferred date and time cant be met");
+		if (!DateManipulation.validAssignDateDaySegment(job.getDatePreferred(), job.getDaySegment(), job.getTimeZone())) throw new IllegalArgumentException("Customer preferred date and time cant be met");
 		if (j.getDatePreferred() == null || j.getDatePreferred() != job.getDatePreferred() && job.getDatePreferred().after(DateManipulation.getYesterdayDate())) j.setDatePreferred(job.getDatePreferred());
 		if(j.getDaySegment() == null ||!j.getDaySegment().equals(job.getDaySegment())) j.setDaySegment(job.getDaySegment());
 		//if (j.getServiceProviderName() == null || !j.getServiceProviderName().equals(job.getServiceProviderName())) j.setServiceProviderName(job.getServiceProviderName());	    
@@ -82,7 +82,7 @@ public class JobService {
 	public Job updateCustomerPreferredDateTime(Job job) throws IllegalArgumentException, NullPointerException {
 		Job j = repository.findOne(job.getId());
 		if (j == null) throw new NullPointerException("Job not found");
-		if (!DateManipulation.validAssignDateDaySegment(job.getDatePreferred(), job.getDaySegment())) throw new IllegalArgumentException("Customer preferred date and time cant be met");
+		if (!DateManipulation.validAssignDateDaySegment(job.getDatePreferred(), job.getDaySegment(), job.getTimeZone())) throw new IllegalArgumentException("Customer preferred date and time cant be met");
 		if (j.getDatePreferred() == null || j.getDatePreferred() != job.getDatePreferred() && job.getDatePreferred().after(DateManipulation.getYesterdayDate())) j.setDatePreferred(job.getDatePreferred());
 		if(j.getDaySegment() == null ||!j.getDaySegment().equals(job.getDaySegment())) j.setDaySegment(job.getDaySegment());
 		return repository.save(j);

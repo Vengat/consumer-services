@@ -2,8 +2,9 @@ package com.bang.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.TimeZone;
 
-import com.bang.misc.*;
+//import com.bang.misc.*;
 
 /*import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,12 @@ import javax.persistence.Id;*/
 import javax.persistence.*;
 
 import org.hibernate.annotations.Type;
+
+import com.bang.misc.DaySegment;
+import com.bang.misc.JobStatus;
+import com.bang.misc.JobType;
+import com.bang.model.Customer;
+import com.bang.model.ServiceProvider;
 
 
 
@@ -34,6 +41,8 @@ public class Job implements Serializable {
 	private JobStatus jobStatus;
 	@Enumerated(EnumType.STRING)
 	private DaySegment daySegment;
+	
+	private TimeZone timeZone;
 
 	@Column(name = "customer_name", nullable = false, length = 50)
 	private String customerName;
@@ -208,5 +217,13 @@ public class Job implements Serializable {
 
 	public void setDatePreferred(Date datePreferred) {
 		this.datePreferred = datePreferred;
+	}
+	
+	public TimeZone getTimeZone() {
+		return timeZone;
+	}
+
+	public void setTimeZone(TimeZone timeZone) {
+		this.timeZone = timeZone;
 	}
 }
