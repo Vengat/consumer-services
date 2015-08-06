@@ -54,7 +54,7 @@ public class SendSimpleMessage {
 	public void sendJobInfoToElgibleServiceProviders(Job job) {
 		logger.info("********************************* @ sendJobInfoToElgibleServiceProviders" + job.getCustomerName());
 		System.out.println("Send sms to eligible service providers....");
-		List<ServiceProvider> serviceProviders = serviceProviderService.getByPincodesServicedAndJobTypeSigneUpFor(job.getPincode(), job.getJobType().toString());
+		List<ServiceProvider> serviceProviders = serviceProviderService.getByPincodesServicedAndJobTypeSignedUpFor(job.getPincode(), job.getJobType().toString());
 		String message = String.format("Hello, Please check if you can take up this new job raised by you Mr.%s (Job Id: %d%n, Type : %s). Customer phone %d%n. Thanks,", job.getCustomerName(), job.getId(), job.getJobType().toString(), job.getCustomerMobileNumber());
 		for (ServiceProvider sp : serviceProviders) {
 			SendSMS.sendSMSToCustomer(String.valueOf(sp.getMobileNumber()), message);

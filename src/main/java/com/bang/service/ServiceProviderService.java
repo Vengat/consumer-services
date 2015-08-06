@@ -77,7 +77,7 @@ public class ServiceProviderService {
 		return (List<ServiceProvider>) repository.findAll();
 	}
 	
-	public List<ServiceProvider> getByPincodesServicedAndJobTypeSigneUpFor(String pincode, String jobType) {
+	public List<ServiceProvider> getByPincodesServicedAndJobTypeSignedUpFor(String pincode, String jobType) {
 	    return repository.findByPincodesServicedAndJobType(pincode, jobType);	
 	}
 	
