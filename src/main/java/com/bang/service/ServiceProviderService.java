@@ -74,7 +74,11 @@ public class ServiceProviderService {
 	}
 	
 	public List<ServiceProvider> getAll() {
-		return (List<ServiceProvider>) repository.findAll();	
+		return (List<ServiceProvider>) repository.findAll();
+	}
+	
+	public List<ServiceProvider> getByPincodesServicedAndJobTypeSigneUpFor(String pincode, String jobType) {
+	    return repository.findByPincodesServicedAndJobType(pincode, jobType);	
 	}
 	
 	public List<Job> getJobsByMobileNumberAndStatus(long mobileNumer, JobStatus jobStatus) {

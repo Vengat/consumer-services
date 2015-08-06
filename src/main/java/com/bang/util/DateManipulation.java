@@ -74,11 +74,11 @@ public class DateManipulation {
 				 if (!dSegment.equals("9-11") || !dSegment.isEmpty()) {
 					 return true;
 				 }
-			 } else if (offSetTime >= 11 && offSetTime < 1) {
+			 } else if (offSetTime >= 11 && offSetTime < 13) {
 				 if (!dSegment.equals("9-11") && !dSegment.equals("11-1") || !dSegment.isEmpty()) {
 					 return true;
 				 }
-			 } else if (offSetTime >= 1 && offSetTime < 3) {
+			 } else if (offSetTime >= 13 && offSetTime < 15) {
 				 if (!dSegment.toString().equals("9-11") && !dSegment.toString().equals("11-1") && !dSegment.toString().equals("1-3") || !dSegment.toString().isEmpty()) {
 					 return true;
 				 }

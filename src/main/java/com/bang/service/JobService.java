@@ -7,6 +7,7 @@ import javax.persistence.EntityNotFoundException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import com.bang.model.Job;
 import com.bang.util.DateManipulation;
 
 @Service
+@Component
 public class JobService {
 	
 	private static final Logger logger = Logger.getLogger(JobService.class);
