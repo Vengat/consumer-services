@@ -137,6 +137,18 @@ public class JobService {
 	}
 	
 	@Transactional
+	public Job start(Job job) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+		Job j = repository.findOne(job.getId());
+		logger.info("About to agree the job "+job.getId());
+		if (j == null) throw new NullPointerException("Job not found");
+		logger.info("About to start the job. Job is available in then db "+j.getId());
+		if (!j.getJobStatus().equals(JobStatus.AGREED)) throw new IllegalStateException("Job is not in the right state to be started");
+		if (j.getJobStatus().equals(JobStatus.AGREED)) j.setJobStatus(JobStatus.WIP);
+		j.setStartTime(job.getStartTime());
+		return repository.save(j);
+	}
+	
+	@Transactional
 	public Job unassign(Job job) throws NullPointerException, IllegalArgumentException, IllegalStateException {
 		Job j = repository.findOne(job.getId());
 		logger.info("About to unassign or disagree the service provider choice "+job.getId());

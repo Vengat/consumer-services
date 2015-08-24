@@ -113,6 +113,17 @@ public class ServiceProviderService {
 		return jobService.assignBySP(job);
 	}
 	
+	@Transactional
+	public Job startJob(long jobId, ServiceProvider serviceProvider) throws IllegalArgumentException, NullPointerException {
+		Job job = jobService.getJobById(jobId);
+		logger.info("Service provider service "+job.getId());
+		ServiceProvider sp = getByMobileNumber(serviceProvider.getMobileNumber());
+		if (sp == null) throw new NullPointerException("Service provider with the given mobile number does not exist");
+		if (sp.getMobileNumber() != job.getServiceProviderMobileNumber()) throw new ServiceProviderNotFoundException("Service providers dont match");
+		if (!job.getJobStatus().equals(JobStatus.AGREED)) throw new IllegalStateException("Job can't be started. Hasn't been agreed by customer");
+		return jobService.start(job);
+	}
+	
 	public List<Job> getJobsMatchingProfile(long mobileNumber) {
 		ServiceProvider sp = getByMobileNumber(mobileNumber);
 		if (sp == null) throw new NullPointerException("Service provider with the mobile number not found");

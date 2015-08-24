@@ -28,7 +28,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(value = {JobNotFoundException.class})
     protected ResponseEntity<Object> handleJobNotFound(RuntimeException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
     	//ErrorMessage errorMessage = new ErrorMessage(ex.getMessage());
-    	return new ResponseEntity<Object>(ex.getMessage(), headers, HttpStatus.NOT_FOUND);
+    	return new ResponseEntity<Object>(ex.getMessage(),  headers, HttpStatus.NOT_FOUND);
     }
     
     @ExceptionHandler(value = {ServiceProviderNotFoundException.class})

@@ -67,6 +67,14 @@ public class Job implements Serializable {
 	@JoinColumn(name = "SP_ID", referencedColumnName = "SP_ID",  insertable = false, updatable = false)
 	private ServiceProvider serviceProvider;
 	
+	//@JoinColumn(name = "INVOICE_ID", referencedColumnName = "INVOICE_ID", insertable = false, updatable = false)
+	@OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy="job", targetEntity = Invoice.class)
+	//@PrimaryKeyJoinColumn
+	private Invoice invoice;
+	
+	//@Column(name = "invoice_id", nullable = true)
+	//private long invoiceId;
+
 	@Column(name = "date_initiated", nullable = false)
 	//@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentZonedDateTime")
 	@Type(type = "date")
@@ -77,6 +85,10 @@ public class Job implements Serializable {
 	@Type(type = "date")
 	private Date datePreferred;
 	
+	@Column(name = "start_time", nullable = true)
+	@Type(type = "date")
+	private Date startTime;
+
 	@Column(name = "date_done", nullable = true)
 	@Type(type = "date")
 	//@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentZonedDateTime")
@@ -225,5 +237,21 @@ public class Job implements Serializable {
 
 	public void setTimeZone(TimeZone timeZone) {
 		this.timeZone = timeZone;
+	}
+	
+	/*public long getInvoiceId() {
+		return invoiceId;
+	}
+
+	public void setInvoiceId(long invoiceId) {
+		this.invoiceId = invoiceId;
+	}*/
+	
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
 	}
 }

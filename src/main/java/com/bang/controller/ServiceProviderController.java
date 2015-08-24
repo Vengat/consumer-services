@@ -108,6 +108,12 @@ public class ServiceProviderController {
 		return new ResponseEntity<Job>(job, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/serviceProviders/startJob/jobId/{jobId}", method = RequestMethod.PUT)
+	public ResponseEntity<Job> startJob(@PathVariable("jobId") long jobId, @RequestBody ServiceProvider serviceProvider) {
+		Job job = service.startJob(jobId, serviceProvider);
+		return new ResponseEntity<Job>(job, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/serviceProviders/openAssignJobs/mobileNumber/{mobileNumber}", method = RequestMethod.GET)
 	public ResponseEntity<List<Job>> getOpenAssignedJobsByPincode(@PathVariable long mobileNumber) throws NullPointerException {
 		List<Job> jobs= service.getJobsMatchingProfile(mobileNumber);
