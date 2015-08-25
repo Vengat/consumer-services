@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bang.controller.exception.CustomerExistsException;
+import com.bang.controller.exception.CustomerNotFoundException;
 import com.bang.controller.exception.JobNotFoundException;
 import com.bang.dao.JobRepository;
 import com.bang.misc.JobStatus;
@@ -50,7 +51,9 @@ public class JobService {
 			customerService.create(new Customer(job.getCustomerName(), job.getPincode(), job.getCustomerMobileNumber()));
 		} catch(CustomerExistsException e) {
 			
-		}		
+		} catch(CustomerNotFoundException ce) {
+			
+		}
 	}
 	
 	@Transactional

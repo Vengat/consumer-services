@@ -1,4 +1,4 @@
-package com.bang.model;
+/*package com.bang.model;
 
 import java.io.Serializable;
 
@@ -13,9 +13,9 @@ import javax.persistence.Table;
 @Table(name = "taxes")
 public class Tax implements Serializable {
 
-	/**
+	*//**
 	 * 
-	 */
+	 *//*
 	private static final long serialVersionUID = 2700958496727564154L;
 	
 	@Id
@@ -26,3 +26,4 @@ public class Tax implements Serializable {
 	private String taxName;
 
 }
+*/

@@ -39,7 +39,8 @@ public class ServiceProviderService {
 			if(getByMobileNumber(serviceProvider.getMobileNumber()) != null) throw new IllegalArgumentException("Service provider with the given mobile number already exists");
 		}catch(ServiceProviderNotFoundException ex) {
 			
-		}		
+		}	
+		logger.info("About to create service provider");
 		return repository.save(serviceProvider);
 	}
 	

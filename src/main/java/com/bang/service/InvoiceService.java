@@ -40,11 +40,15 @@ public class InvoiceService {
 	 * 
 	 * @param invoice
 	 * @return
+	 * @throws BadCouponException 
 	 */
-	public Invoice create(Invoice invoice) throws CustomerNotFoundException, ServiceProviderNotFoundException {
+	@Transactional
+	public Invoice create(Invoice invoice) throws CustomerNotFoundException, ServiceProviderNotFoundException, BadCouponException {
+		logger.info(invoice.getCustomerMobileNumber());
 		if (!customerService.isCustomerExists(invoice.getCustomerMobileNumber())) throw new CustomerNotFoundException("Customer with the mobile number could not be found");
 		if (!serviceProviderService.isServiceProvider(invoice.getServiceProviderMobileNumber())) throw new ServiceProviderNotFoundException("Service provider with the mobile number could not be found");
-		return repository.save(invoice);
+		Invoice inv = applyCoupon(invoice);
+		return repository.save(inv);
 	}
 	
 	/**
@@ -76,7 +80,7 @@ public class InvoiceService {
 	
 	private Invoice applyCoupon(Invoice inv) throws BadCouponException {
 		String couponCode = inv.getCouponCode();
-		if (!couponCode.isEmpty()) {
+		if (!couponCode.isEmpty() && couponCode != null) {
 			Coupon coupon = couponService.getCouponByCode(couponCode);
 			if (coupon == null) throw new NullPointerException("Coupon not found");
 			if (couponService.isCouponExpired(coupon)) throw new BadCouponException("Expired coupon");

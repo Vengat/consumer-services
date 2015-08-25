@@ -38,8 +38,10 @@ public class CustomerService {
 	public Customer create(Customer customer) {
 		//if (getByMobileNumber(customer.getMobileNumber()) != null) return getByMobileNumber(customer.getMobileNumber());
 		if (isCustomerExists(customer.getMobileNumber())) throw new CustomerExistsException("Exists. Customer with mobile number "+customer.getMobileNumber());
+		logger.info("Saving customer");
 		return repository.save(customer);
 	}
+	
 	
 	@Transactional
 	public Customer update(Customer customer) {
@@ -54,12 +56,18 @@ public class CustomerService {
 	}
 	
 	public boolean isCustomerExists(long mobileNumber) {
-		if (this.getByMobileNumber(mobileNumber) != null) return true;
+		try {
+			if (this.getByMobileNumber(mobileNumber) != null) return true;	
+		} catch(CustomerNotFoundException e) {
+			
+		}		
 		return false;
 	}
 	
-	public Customer getByMobileNumber(long mobileNumber) {
-		return repository.findByMobileNumber(mobileNumber);
+	public Customer getByMobileNumber(long mobileNumber) throws CustomerNotFoundException {
+		Customer customer = repository.findByMobileNumber(mobileNumber);
+		if (customer == null) throw new CustomerNotFoundException("Customer not found");
+		return customer;
 	}
 	
 	public List<Job> getJobsByMobileNumberAndStatus(long mobileNumber, JobStatus jobStatus) {

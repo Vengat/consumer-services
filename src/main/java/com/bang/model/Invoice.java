@@ -51,8 +51,8 @@ public class Invoice implements Serializable {
 	private ServiceProvider serviceProvider;
 	
 	//@OneToOne(mappedBy = "invoice")
-	@OneToOne(optional = false)
-	@JoinColumn(name = "JOB_ID", referencedColumnName = "JOB_ID",  insertable = false, updatable = false)
+	@OneToOne(optional = false, mappedBy = "invoice")	
+	//@JoinColumn(name = "JOB_ID", referencedColumnName = "JOB_ID",  insertable = false, updatable = false)
 	private Job job;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
@@ -80,7 +80,7 @@ public class Invoice implements Serializable {
 	@Column(name = "discounted_total_charges")
 	private BigDecimal discountedTotalCharges;
 	
-	@Column(name = "JOB_ID", nullable = false)
+	@Column(name = "INV_JOB_ID", nullable = false)
 	private long jobId;
 	
 	@Column(name = "invoice_date")
@@ -108,7 +108,7 @@ public class Invoice implements Serializable {
 	}
 
 	public void setLabourCharges(BigDecimal labourCharges) throws IllegalArgumentException {
-		if (labourCharges.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Charges should be non-negative labour charges");;
+		if (labourCharges.compareTo(BigDecimal.ZERO) < 0 && labourCharges != null) throw new IllegalArgumentException("Charges should be non-negative labour charges");;
 		this.labourCharges = labourCharges;
 		this.labourCharges = rounded(this.labourCharges);
 	}
@@ -118,7 +118,7 @@ public class Invoice implements Serializable {
 	}
 
 	public void setMaterialCharges(BigDecimal materialCharges) throws IllegalArgumentException {
-		if (materialCharges.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Charges should be non-negative material charges");
+		if (materialCharges.compareTo(BigDecimal.ZERO) < 0 && materialCharges != null) throw new IllegalArgumentException("Charges should be non-negative material charges");
 		this.materialCharges = materialCharges;
 		this.materialCharges = rounded(this.materialCharges);
 	}
@@ -129,7 +129,7 @@ public class Invoice implements Serializable {
 
 	@Column(name = "total_charges")
 	public void setTotalCharges(BigDecimal totalCharges) throws IllegalArgumentException {
-		if (totalCharges.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Charges should be non-negative material charges");
+		if (totalCharges.compareTo(BigDecimal.ZERO) < 0 && totalCharges != null) throw new IllegalArgumentException("Charges should be non-negative material charges");
 		this.totalCharges = getLabourCharges().add(getMaterialCharges());
 		this.totalCharges = rounded(this.totalCharges);
 	}
@@ -139,7 +139,7 @@ public class Invoice implements Serializable {
 	}
 
 	public void setDiscountedLabourCharges(BigDecimal discountedLabourCharges) {
-		if (discountedLabourCharges.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Charges should be non-negative labour charges");
+		if (discountedLabourCharges.compareTo(BigDecimal.ZERO) < 0 && discountedLabourCharges != null) throw new IllegalArgumentException("Charges should be non-negative labour charges");
 		this.discountedLabourCharges = rounded(discountedLabourCharges);
 	}
 
@@ -157,7 +157,7 @@ public class Invoice implements Serializable {
 	}
 
 	public void setDiscountedTotalCharges(BigDecimal discountedTotalCharges) {
-		if (discountedTotalCharges.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Charges should be non-negative total charges");
+		if (discountedTotalCharges.compareTo(BigDecimal.ZERO) < 0 && discountedTotalCharges != null) throw new IllegalArgumentException("Charges should be non-negative total charges");
 		this.discountedTotalCharges = rounded(discountedTotalCharges);
 	}
 	
@@ -225,4 +225,5 @@ public class Invoice implements Serializable {
 	public void setCouponCode(String couponCode) {
 		this.couponCode = couponCode;
 	}
+
 }

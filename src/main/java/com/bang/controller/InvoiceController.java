@@ -35,29 +35,49 @@ public class InvoiceController {
 	public ResponseEntity<Invoice> get() {
 		logger.info("At invoice controller");
 		Invoice invoice = new Invoice(0L, 0L, "", 0L, "", new BigDecimal("0.0"), new BigDecimal("0.0"));
+		invoice.setTotalCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedLabourCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedMaterialCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedTotalCharges(new BigDecimal("0.0"));
 		return new ResponseEntity<Invoice>(invoice, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/invoices", method = RequestMethod.POST)
-	public ResponseEntity<Invoice> create(@RequestBody Invoice invoice) {
+	public ResponseEntity<Invoice> create(@RequestBody Invoice invoice) throws CustomerNotFoundException, ServiceProviderNotFoundException, BadCouponException {
+		invoice.setTotalCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedLabourCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedMaterialCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedTotalCharges(new BigDecimal("0.0"));
 		Invoice inv = service.create(invoice);
 		return new ResponseEntity<Invoice>(inv, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/invoices/updateCharges")
 	public ResponseEntity<Invoice> updateCharges(@RequestBody Invoice invoice) throws CustomerNotFoundException, ServiceProviderNotFoundException, NullPointerException, BadCouponException {
+		invoice.setTotalCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedLabourCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedMaterialCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedTotalCharges(new BigDecimal("0.0"));
 		Invoice inv = service.updateCharges(invoice);
 		return new ResponseEntity<Invoice>(inv, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/invoices/updateLabourCharges")
 	public ResponseEntity<Invoice> updateLabourCharges(@RequestBody Invoice invoice) throws CustomerNotFoundException, ServiceProviderNotFoundException, NullPointerException, BadCouponException {
+		invoice.setTotalCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedLabourCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedMaterialCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedTotalCharges(new BigDecimal("0.0"));
 		Invoice inv = service.updateLabourCharges(invoice);
 		return new ResponseEntity<Invoice>(inv, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/invoices/updateMaterialCharges")
 	public ResponseEntity<Invoice> updateMaterialCharges(@RequestBody Invoice invoice) throws CustomerNotFoundException, ServiceProviderNotFoundException, NullPointerException, BadCouponException {
+		invoice.setTotalCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedLabourCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedMaterialCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedTotalCharges(new BigDecimal("0.0"));
 		Invoice inv = service.updateMaterialCharges(invoice);
 		return new ResponseEntity<Invoice>(inv, HttpStatus.OK);
 	}

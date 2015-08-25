@@ -42,7 +42,7 @@ public class CustomerController {
 	@RequestMapping(value = "/customers", method = RequestMethod.GET)
 	public ResponseEntity<Customer> get() {
 		logger.info("Customer Controller get() called");
-		Customer customer = new Customer("Name", "Address", "City", "Pincode", 987654321);
+		Customer customer = new Customer("Name", "Address", "City", "Pincode", 0L);
 		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
 	}
 	

@@ -67,9 +67,8 @@ public class Job implements Serializable {
 	@JoinColumn(name = "SP_ID", referencedColumnName = "SP_ID",  insertable = false, updatable = false)
 	private ServiceProvider serviceProvider;
 	
-	//@JoinColumn(name = "INVOICE_ID", referencedColumnName = "INVOICE_ID", insertable = false, updatable = false)
-	@OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy="job", targetEntity = Invoice.class)
-	//@PrimaryKeyJoinColumn
+	@JoinColumn(name = "INVOICE_ID", referencedColumnName = "INVOICE_ID", insertable = false, updatable = false)
+	@OneToOne(cascade = CascadeType.ALL, optional = true, fetch = FetchType.LAZY, orphanRemoval = true, targetEntity = Invoice.class)
 	private Invoice invoice;
 	
 	//@Column(name = "invoice_id", nullable = true)
