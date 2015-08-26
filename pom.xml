@@ -78,6 +78,25 @@
             <version>${joda.version}</version>
         </dependency>
         
+        <dependency>
+	        <groupId>joda-time</groupId>
+	        <artifactId>joda-time-hibernate</artifactId>
+	        <version>${joda.time.hibernate}</version>
+        </dependency>
+        
+        
+        <dependency>
+            <groupId>org.jadira.usertype</groupId>
+            <artifactId>usertype.extended</artifactId>
+            <version>${jadira.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.jadira.usertype</groupId>
+            <artifactId>usertype.core</artifactId>
+            <version>${jadira.core}</version>
+        </dependency>
+        
         <!-- Log4J -->
         <dependency>
             <groupId>log4j</groupId>
@@ -90,7 +109,6 @@
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
         </dependency>
-		
     </dependencies>
 
     <properties>
@@ -99,6 +117,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <log4j.version>1.2.17</log4j.version>  
         <joda.version>2.8.1</joda.version>
+        <jadira.version>4.0.0.GA</jadira.version>
+        <joda.time.hibernate>1.4</joda.time.hibernate>
+        <jadira.core>4.0.0.GA</jadira.core>
     </properties>
 
 
@@ -120,6 +141,10 @@
             <id>org.jboss.repository.releases</id>
             <name>JBoss Maven Release Repository</name>
             <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+        </repository>
+        <repository>
+            <id>codehaus</id>
+            <url>http://repository.codehaus.org/org/codehaus</url>
         </repository>
     </repositories>
     <pluginRepositories>

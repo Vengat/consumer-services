@@ -37,7 +37,7 @@ public class ServiceProvider implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@Column(name = "mobile_number", unique = true, nullable = false)
+	@Column(name = "mobile_number", nullable = false, unique = true)
 	private long mobileNumber;
 	
 	@Column(nullable = false)

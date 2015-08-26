@@ -59,15 +59,16 @@ public class Job implements Serializable {
 	@Column(name = "pincode", length = 10, nullable = false)
 	private String pincode;
 	
-	@ManyToOne(optional = true)
-	@JoinColumn(name = "CUST_ID", referencedColumnName = "CUST_ID",  insertable = false, updatable = false)
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "customer_mobile_number", referencedColumnName = "mobile_number",  insertable = false, updatable = false, unique = true, nullable = false)
 	private Customer customer;
 	
-	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-	@JoinColumn(name = "SP_ID", referencedColumnName = "SP_ID",  insertable = false, updatable = false)
+	@ManyToOne(optional = true, fetch = FetchType.LAZY)	
+	@JoinColumn(name = "fk_mobile_number", referencedColumnName = "mobile_number",  insertable = false, updatable = false)
 	private ServiceProvider serviceProvider;
 	
-	@JoinColumn(name = "INVOICE_ID", referencedColumnName = "INVOICE_ID", insertable = false, updatable = false)
+	//@JoinColumn(name = "INVOICE_ID", referencedColumnName = "INVOICE_ID", insertable = false, updatable = false)
+	@JoinColumn(name = "JOB_ID", referencedColumnName = "INV_JOB_ID", insertable = false, updatable = false, nullable = false, unique = true)
 	@OneToOne(cascade = CascadeType.ALL, optional = true, fetch = FetchType.LAZY, orphanRemoval = true, targetEntity = Invoice.class)
 	private Invoice invoice;
 	

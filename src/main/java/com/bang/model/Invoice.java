@@ -35,19 +35,19 @@ public class Invoice implements Serializable {
 	@Column(name = "customer_mobile_number", nullable = false)
 	private long customerMobileNumber;
 	
-	@Column(name = "service_provider_name", length = 50, nullable = true)
+	@Column(name = "service_provider_name", length = 50, nullable = false)
 	private String serviceProviderName;
 	
 
-	@Column(name = "sp_mobile_number", nullable = true)
+	@Column(name = "sp_mobile_number", nullable = false)
 	private long serviceProviderMobileNumber;
 	
-	@ManyToOne(optional = true)
-	@JoinColumn(name = "CUST_ID", referencedColumnName = "CUST_ID",  insertable = false, updatable = false)
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "customer_mobile_number", referencedColumnName = "mobile_number",  insertable = false, updatable = false)
 	private Customer customer;
 	
-	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-	@JoinColumn(name = "SP_ID", referencedColumnName = "SP_ID",  insertable = false, updatable = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "sp_mobile_number", referencedColumnName = "mobile_number",  insertable = false, updatable = false)
 	private ServiceProvider serviceProvider;
 	
 	//@OneToOne(mappedBy = "invoice")
@@ -55,8 +55,8 @@ public class Invoice implements Serializable {
 	//@JoinColumn(name = "JOB_ID", referencedColumnName = "JOB_ID",  insertable = false, updatable = false)
 	private Job job;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = true)
-	@JoinColumn(name = "COUPON_ID", referencedColumnName = "COUPON_ID", insertable = false, updatable = false)
+	@ManyToOne(optional = true, fetch = FetchType.LAZY)	
+	@JoinColumn(name = "fk_coupon_code", referencedColumnName = "coupon_code",  insertable = false, updatable = false)
 	private Coupon coupon;
 	
 	@Column(name = "coupon_code")

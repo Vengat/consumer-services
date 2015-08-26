@@ -47,6 +47,7 @@ public class InvoiceService {
 		logger.info(invoice.getCustomerMobileNumber());
 		if (!customerService.isCustomerExists(invoice.getCustomerMobileNumber())) throw new CustomerNotFoundException("Customer with the mobile number could not be found");
 		if (!serviceProviderService.isServiceProvider(invoice.getServiceProviderMobileNumber())) throw new ServiceProviderNotFoundException("Service provider with the mobile number could not be found");
+		if (invoice.getCouponCode() == null) return repository.save(invoice);
 		Invoice inv = applyCoupon(invoice);
 		return repository.save(inv);
 	}
@@ -78,14 +79,13 @@ public class InvoiceService {
 		return repository.save(inv);
 	}
 	
-	private Invoice applyCoupon(Invoice inv) throws BadCouponException {
-		String couponCode = inv.getCouponCode();
-		if (!couponCode.isEmpty() && couponCode != null) {
-			Coupon coupon = couponService.getCouponByCode(couponCode);
-			if (coupon == null) throw new NullPointerException("Coupon not found");
-			if (couponService.isCouponExpired(coupon)) throw new BadCouponException("Expired coupon");
-			inv = applyDiscount(inv, coupon);
-		}
+	private Invoice applyCoupon(Invoice inv) throws BadCouponException, NullPointerException {
+		String couponCode = inv.getCouponCode();	
+		if (couponCode == null) return inv;	
+		Coupon coupon = couponService.getCouponByCode(couponCode);
+		if (coupon == null) throw new NullPointerException("Coupon not found");
+		if (couponService.isCouponExpired(coupon)) throw new BadCouponException("Expired coupon");
+		inv = applyDiscount(inv, coupon);
 		return inv;
 	}
 	
