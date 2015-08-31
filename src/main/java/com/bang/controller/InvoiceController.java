@@ -52,6 +52,16 @@ public class InvoiceController {
 		return new ResponseEntity<Invoice>(inv, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/invoices/display", method = RequestMethod.POST)
+	public ResponseEntity<Invoice> calculateInvoiceAmountToDisplay(@RequestBody Invoice invoice) throws CustomerNotFoundException, ServiceProviderNotFoundException, BadCouponException {
+		invoice.setTotalCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedLabourCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedMaterialCharges(new BigDecimal("0.0"));
+		invoice.setDiscountedTotalCharges(new BigDecimal("0.0"));
+		Invoice inv = service.display(invoice);
+		return new ResponseEntity<Invoice>(inv, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/invoices/updateCharges")
 	public ResponseEntity<Invoice> updateCharges(@RequestBody Invoice invoice) throws CustomerNotFoundException, ServiceProviderNotFoundException, NullPointerException, BadCouponException {
 		invoice.setTotalCharges(new BigDecimal("0.0"));

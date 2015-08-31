@@ -13,6 +13,7 @@ import javax.persistence.Id;*/
 import javax.persistence.*;
 
 import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 import com.bang.misc.DaySegment;
 import com.bang.misc.JobStatus;
@@ -72,9 +73,9 @@ public class Job implements Serializable {
 	@OneToOne(cascade = CascadeType.ALL, optional = true, fetch = FetchType.LAZY, orphanRemoval = true, targetEntity = Invoice.class)
 	private Invoice invoice;
 	
-	//@Column(name = "invoice_id", nullable = true)
-	//private long invoiceId;
-
+/*	@Column(name = "invoice_id", nullable = true)
+	private long invoiceId;
+*/
 	@Column(name = "date_initiated", nullable = false)
 	//@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentZonedDateTime")
 	@Type(type = "date")
@@ -86,6 +87,7 @@ public class Job implements Serializable {
 	private Date datePreferred;
 	
 	@Column(name = "start_time", nullable = true)
+	//@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Type(type = "date")
 	private Date startTime;
 
@@ -239,14 +241,14 @@ public class Job implements Serializable {
 		this.timeZone = timeZone;
 	}
 	
-	/*public long getInvoiceId() {
+/*	public long getInvoiceId() {
 		return invoiceId;
 	}
 
 	public void setInvoiceId(long invoiceId) {
 		this.invoiceId = invoiceId;
-	}*/
-	
+	}
+*/	
 	public Date getStartTime() {
 		return startTime;
 	}

@@ -147,7 +147,11 @@ public class JobService {
 		logger.info("About to start the job. Job is available in then db "+j.getId());
 		if (!j.getJobStatus().equals(JobStatus.AGREED)) throw new IllegalStateException("Job is not in the right state to be started");
 		if (j.getJobStatus().equals(JobStatus.AGREED)) j.setJobStatus(JobStatus.WIP);
-		j.setStartTime(job.getStartTime());
+		if (job.getStartTime() != null) {
+			j.setStartTime(job.getStartTime());
+		} else {
+			j.setStartTime(new Date());
+		}
 		return repository.save(j);
 	}
 	

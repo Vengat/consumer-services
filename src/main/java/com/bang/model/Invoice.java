@@ -130,7 +130,7 @@ public class Invoice implements Serializable {
 	@Column(name = "total_charges")
 	public void setTotalCharges(BigDecimal totalCharges) throws IllegalArgumentException {
 		if (totalCharges.compareTo(BigDecimal.ZERO) < 0 && totalCharges != null) throw new IllegalArgumentException("Charges should be non-negative material charges");
-		this.totalCharges = getLabourCharges().add(getMaterialCharges());
+		this.totalCharges = totalCharges;//getLabourCharges().add(getMaterialCharges());
 		this.totalCharges = rounded(this.totalCharges);
 	}
 	

@@ -47,9 +47,33 @@ public class InvoiceService {
 		logger.info(invoice.getCustomerMobileNumber());
 		if (!customerService.isCustomerExists(invoice.getCustomerMobileNumber())) throw new CustomerNotFoundException("Customer with the mobile number could not be found");
 		if (!serviceProviderService.isServiceProvider(invoice.getServiceProviderMobileNumber())) throw new ServiceProviderNotFoundException("Service provider with the mobile number could not be found");
-		if (invoice.getCouponCode() == null) return repository.save(invoice);
+		if (invoice.getLabourCharges().compareTo(BigDecimal.ZERO) < 0) {
+			invoice.setLabourCharges(new BigDecimal("0"));
+		}
+		if (invoice.getMaterialCharges().compareTo(BigDecimal.ZERO) < 0) {
+			invoice.setMaterialCharges(new BigDecimal("0"));
+		}
+		invoice.setTotalCharges(invoice.getMaterialCharges().add(invoice.getLabourCharges()));
+		if (invoice.getCouponCode().trim().isEmpty()) return repository.save(invoice);
 		Invoice inv = applyCoupon(invoice);
 		return repository.save(inv);
+	}
+	
+	@Transactional
+	public Invoice display(Invoice invoice) throws CustomerNotFoundException, ServiceProviderNotFoundException, BadCouponException {
+		logger.info(invoice.getCustomerMobileNumber());
+		if (!customerService.isCustomerExists(invoice.getCustomerMobileNumber())) throw new CustomerNotFoundException("Customer with the mobile number could not be found");
+		if (!serviceProviderService.isServiceProvider(invoice.getServiceProviderMobileNumber())) throw new ServiceProviderNotFoundException("Service provider with the mobile number could not be found");
+		if (invoice.getLabourCharges().compareTo(BigDecimal.ZERO) < 0) {
+			invoice.setLabourCharges(new BigDecimal("0"));
+		}
+		if (invoice.getMaterialCharges().compareTo(BigDecimal.ZERO) < 0) {
+			invoice.setMaterialCharges(new BigDecimal("0"));
+		}
+		invoice.setTotalCharges(invoice.getMaterialCharges().add(invoice.getLabourCharges()));
+		if (invoice.getCouponCode().trim().isEmpty()) return invoice;
+		Invoice inv = applyCoupon(invoice);
+		return inv;
 	}
 	
 	/**
@@ -63,14 +87,16 @@ public class InvoiceService {
 		if (!serviceProviderService.isServiceProvider(invoice.getServiceProviderMobileNumber())) throw new ServiceProviderNotFoundException("Service provider with the mobile number could not be found");
 		Invoice inv = repository.findOne(invoice.getId());
 		if (inv == null)throw new NullPointerException("Invoice not found");
-		if (!inv.getLabourCharges().equals(invoice.getLabourCharges())) {
+		if (!inv.getLabourCharges().equals(invoice.getLabourCharges()) && inv.getLabourCharges().compareTo(BigDecimal.ZERO) >= 0) {
 			inv.setLabourCharges(invoice.getLabourCharges());
 		}
-		if (!inv.getMaterialCharges().equals(invoice.getMaterialCharges())) {
+		if (!inv.getMaterialCharges().equals(invoice.getMaterialCharges()) && inv.getMaterialCharges().compareTo(BigDecimal.ZERO) >= 0) {
 			inv.setMaterialCharges(invoice.getMaterialCharges());
 		}
+		invoice.setTotalCharges(invoice.getMaterialCharges().add(invoice.getLabourCharges()));
+
 		String couponCode = inv.getCouponCode();
-		if (!couponCode.isEmpty()) {
+		if (couponCode != null && !couponCode.trim().isEmpty()) {
 			Coupon coupon = couponService.getCouponByCode(couponCode);
 			if (coupon == null) throw new NullPointerException("Coupon not found");
 			if (couponService.isCouponExpired(coupon)) throw new BadCouponException("Expired coupon");
@@ -80,8 +106,9 @@ public class InvoiceService {
 	}
 	
 	private Invoice applyCoupon(Invoice inv) throws BadCouponException, NullPointerException {
-		String couponCode = inv.getCouponCode();	
-		if (couponCode == null) return inv;	
+		String couponCode = inv.getCouponCode();
+		logger.info("Coupon code is "+couponCode);
+		if (couponCode.trim().isEmpty()) return inv;	
 		Coupon coupon = couponService.getCouponByCode(couponCode);
 		if (coupon == null) throw new NullPointerException("Coupon not found");
 		if (couponService.isCouponExpired(coupon)) throw new BadCouponException("Expired coupon");
