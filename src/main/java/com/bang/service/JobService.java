@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityNotFoundException;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,8 @@ public class JobService {
 			}			
 		}
 		if (!j.getJobStatus().equals(job.getJobStatus())) j.setJobStatus(job.getJobStatus());
-		if (j.getDateDone() == null || job.getDateDone() != null && j.getDateDone().before(job.getDateDone())) j.setDateDone(job.getDateDone());
+		//if (j.getDateDone() == null || job.getDateDone() != null && j.getDateDone().before(job.getDateDone())) j.setDateDone(job.getDateDone());
+		if (j.getDateDone() == null || job.getDateDone() != null && j.getDateDone().isBefore(job.getDateDone())) j.setDateDone(job.getDateDone());
 		if (!j.getCustomerName().equals(job.getCustomerName())) j.setCustomerName(job.getCustomerName());
 		if (job.getDescription().isEmpty() || !j.getDescription().equalsIgnoreCase(job.getDescription())) j.setDescription(job.getDescription());
 		if (!j.getPincode().equals(job.getPincode())) j.setPincode(job.getPincode());
@@ -77,7 +79,7 @@ public class JobService {
 			j.setServiceProviderName(spService.getByMobileNumber(job.getServiceProviderMobileNumber()).getName());
 		}
 		if (!DateManipulation.validAssignDateDaySegment(job.getDatePreferred(), job.getDaySegment(), job.getTimeZone())) throw new IllegalArgumentException("Customer preferred date and time cant be met");
-		if (j.getDatePreferred() == null || j.getDatePreferred() != job.getDatePreferred() && job.getDatePreferred().after(DateManipulation.getYesterdayDate())) j.setDatePreferred(job.getDatePreferred());
+		if (j.getDatePreferred() == null || j.getDatePreferred() != job.getDatePreferred() && job.getDatePreferred().isAfter(DateManipulation.getYesterdayDate())) j.setDatePreferred(job.getDatePreferred());
 		if(j.getDaySegment() == null ||!j.getDaySegment().equals(job.getDaySegment())) j.setDaySegment(job.getDaySegment());
 		//if (j.getServiceProviderName() == null || !j.getServiceProviderName().equals(job.getServiceProviderName())) j.setServiceProviderName(job.getServiceProviderName());	    
 		return repository.save(j);       	
@@ -88,7 +90,7 @@ public class JobService {
 		Job j = repository.findOne(job.getId());
 		if (j == null) throw new NullPointerException("Job not found");
 		if (!DateManipulation.validAssignDateDaySegment(job.getDatePreferred(), job.getDaySegment(), job.getTimeZone())) throw new IllegalArgumentException("Customer preferred date and time cant be met");
-		if (j.getDatePreferred() == null || j.getDatePreferred() != job.getDatePreferred() && job.getDatePreferred().after(DateManipulation.getYesterdayDate())) j.setDatePreferred(job.getDatePreferred());
+		if (j.getDatePreferred() == null || j.getDatePreferred() != job.getDatePreferred() && job.getDatePreferred().isAfter(DateManipulation.getYesterdayDate())) j.setDatePreferred(job.getDatePreferred());
 		if(j.getDaySegment() == null ||!j.getDaySegment().equals(job.getDaySegment())) j.setDaySegment(job.getDaySegment());
 		return repository.save(j);
 	}
@@ -106,7 +108,7 @@ public class JobService {
 		Job j = repository.findOne(job.getId());
 		if (j == null) throw new NullPointerException("Job not found");
 		j.setJobStatus(JobStatus.CLOSED);
-		j.setDateDone(new Date());
+		j.setDateDone(new DateTime());
 		return j;
 	}
 	
@@ -150,7 +152,7 @@ public class JobService {
 		if (job.getStartTime() != null) {
 			j.setStartTime(job.getStartTime());
 		} else {
-			j.setStartTime(new Date());
+			j.setStartTime(new DateTime());
 		}
 		return repository.save(j);
 	}

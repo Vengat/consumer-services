@@ -20,12 +20,16 @@ import com.bang.misc.JobStatus;
 import com.bang.misc.JobType;
 import com.bang.model.Customer;
 import com.bang.model.ServiceProvider;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-
+import com.fasterxml.jackson.datatype.joda.ser.DateTimeSerializer;
 
 
 @Entity
 @Table(name = "jobs")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Job implements Serializable {
 
 	/**
@@ -76,25 +80,37 @@ public class Job implements Serializable {
 /*	@Column(name = "invoice_id", nullable = true)
 	private long invoiceId;
 */
+	@JsonSerialize(using = DateTimeSerializer.class)
 	@Column(name = "date_initiated", nullable = false)
 	//@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentZonedDateTime")
-	@Type(type = "date")
-	private Date dateInitiated;
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	//@Type(type = "date")
+	//@JsonProperty(value = "dtInitiated")
+	private DateTime dateInitiated;
 	
+	@JsonSerialize(using = DateTimeSerializer.class)
 	@Column(name = "date_preferred", nullable = true)
 	//@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentZonedDateTime")
-	@Type(type = "date")
-	private Date datePreferred;
+	//@Type(type = "date")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	//@JsonProperty(value = "dtPreferred")
+	private DateTime datePreferred;
 	
+	@JsonSerialize(using = DateTimeSerializer.class)
 	@Column(name = "start_time", nullable = true)
 	//@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	@Type(type = "date")
-	private Date startTime;
+	//@Type(type = "date")
+	//@JsonProperty(value = "strtTime")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime startTime;
 
+	@JsonSerialize(using = DateTimeSerializer.class)
 	@Column(name = "date_done", nullable = true)
-	@Type(type = "date")
+	//@Type(type = "date")
 	//@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentZonedDateTime")
-	private Date dateDone;
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	//@JsonProperty(value = "dtDone")
+	private DateTime dateDone;
 	
 	@Column(name = "description", length = 500)
 	private String description;
@@ -102,7 +118,7 @@ public class Job implements Serializable {
 	protected Job() {
 	}
 	
-	public Job(JobType jobType, JobStatus jobStatus, String customerName, String pincode, String description, long customerMobileNumber, long serviceProviderMobileNumber, String serviceProviderName, Date datePreferred, DaySegment daySegment) {
+	public Job(JobType jobType, JobStatus jobStatus, String customerName, String pincode, String description, long customerMobileNumber, long serviceProviderMobileNumber, String serviceProviderName, DateTime datePreferred, DaySegment daySegment) {
 		//this.id = id;
 		this.jobType = jobType;
 		this.customerName = customerName;
@@ -112,7 +128,7 @@ public class Job implements Serializable {
 		this.customerMobileNumber = customerMobileNumber;
 		this.serviceProviderMobileNumber = serviceProviderMobileNumber;
 		this.serviceProviderName = serviceProviderName;
-		this.dateInitiated = new Date();
+		this.dateInitiated = new DateTime();
 		this.datePreferred = datePreferred;
 		this.daySegment = daySegment;
 	}
@@ -181,11 +197,11 @@ public class Job implements Serializable {
 		this.pincode = pincode;
 	}
 
-	public Date getDateDone() {
+	public DateTime getDateDone() {
 		return dateDone;
 	}
 
-	public void setDateDone(Date dateDone) {
+	public void setDateDone(DateTime dateDone) {
 		this.dateDone = dateDone;
 	}
 
@@ -193,11 +209,11 @@ public class Job implements Serializable {
 		return id;
 	}
 
-	public Date getDateInitiated() {
+	public DateTime getDateInitiated() {
 		return dateInitiated;
 	}
 	
-	 public void setDateInitiated(Date dateInitiated) {
+	 public void setDateInitiated(DateTime dateInitiated) {
          this.dateInitiated = dateInitiated;
     }
 
@@ -225,11 +241,11 @@ public class Job implements Serializable {
 		this.customerMobileNumber = customerMobileNumber;
 	}
 	
-	public Date getDatePreferred() {
+	public DateTime getDatePreferred() {
 		return datePreferred;
 	}
 
-	public void setDatePreferred(Date datePreferred) {
+	public void setDatePreferred(DateTime datePreferred) {
 		this.datePreferred = datePreferred;
 	}
 	
@@ -249,11 +265,11 @@ public class Job implements Serializable {
 		this.invoiceId = invoiceId;
 	}
 */	
-	public Date getStartTime() {
+	public DateTime getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(Date startTime) {
+	public void setStartTime(DateTime startTime) {
 		this.startTime = startTime;
 	}
 }

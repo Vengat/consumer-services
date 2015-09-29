@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class JobController {
 	@RequestMapping(value = "/jobs", method = RequestMethod.GET)
 	public ResponseEntity<Job> get() {
 		logger.info("About to get job");
-		Job job = new Job(JobType.UNDEFINED, JobStatus.OPEN, "", "", "", 0L, 0L, "", new Date(), DaySegment.EVENING);
+		Job job = new Job(JobType.UNDEFINED, JobStatus.OPEN, "", "", "", 0L, 0L, "", new DateTime(), DaySegment.EVENING);
 		return new ResponseEntity<Job>(job, HttpStatus.OK);
 	}
 	

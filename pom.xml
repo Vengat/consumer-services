@@ -84,7 +84,6 @@
 	        <version>${joda.time.hibernate}</version>
         </dependency>
         
-        
         <dependency>
             <groupId>org.jadira.usertype</groupId>
             <artifactId>usertype.extended</artifactId>
@@ -96,6 +95,39 @@
             <artifactId>usertype.core</artifactId>
             <version>${jadira.core}</version>
         </dependency>
+        
+        <!-- Jackson -->
+        
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.lib.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-joda</artifactId>
+            <version>${jackson.lib.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.lib.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.lib.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.lib.version}</version>
+        </dependency>
+
         
         <!-- Log4J -->
         <dependency>
@@ -120,6 +152,7 @@
         <jadira.version>4.0.0.GA</jadira.version>
         <joda.time.hibernate>1.4</joda.time.hibernate>
         <jadira.core>4.0.0.GA</jadira.core>
+        <jackson.lib.version>2.6.2</jackson.lib.version>
     </properties>
 
 
